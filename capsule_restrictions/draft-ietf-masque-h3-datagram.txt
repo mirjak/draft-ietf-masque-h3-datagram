@@ -5,8 +5,8 @@
 MASQUE                                                       D. Schinazi
 Internet-Draft                                                Google LLC
 Intended status: Standards Track                               L. Pardue
-Expires: 29 August 2022                                       Cloudflare
-                                                        25 February 2022
+Expires: 1 September 2022                                     Cloudflare
+                                                        28 February 2022
 
 
                        Using Datagrams with HTTP
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 August 2022.
+   This Internet-Draft will expire on 1 September 2022.
 
 Copyright Notice
 
@@ -187,14 +187,16 @@ Table of Contents
    that datagram silently or buffer it temporarily while awaiting the
    creation of the corresponding stream.
 
-   HTTP/3 datagrams MUST NOT be sent associated with streams that do not
-   define semantics for HTTP Datagrams.  For example, existing HTTP
-   methods GET and POST do not define semantics for associated HTTP
-   Datagrams.  If an endpoint receives an HTTP/3 datagram associated
-   with a method that has no known semantics for HTTP Datagrams, it MUST
-   abort the corresponding stream with H3_GENERAL_PROTOCOL_ERROR.
-   Future extensions MAY remove these requirements if they define
-   semantics for such HTTP Datagrams and negotiate mutual support.
+   HTTP/3 datagrams MUST only be sent with an association to a stream
+   that supports semantics for HTTP Datagrams.  For example, existing
+   HTTP methods GET and POST do not define semantics for associated HTTP
+   Datagrams; therefore, HTTP/3 datagrams cannot be sent associated with
+   GET or POST request streams.  If an endpoint receives an HTTP/3
+   datagram associated with a method that has no known semantics for
+   HTTP Datagrams, it MUST abort the corresponding stream with
+   H3_GENERAL_PROTOCOL_ERROR.  Future extensions MAY remove these
+   requirements if they define semantics for such HTTP Datagrams and
+   negotiate mutual support.
 
 4.  Capsules
 
@@ -422,7 +424,8 @@ Table of Contents
    on this endpoint.
 
    Since use of the Capsule Protocol is restricted to new HTTP Upgrade
-   Tokens, it is not accessible from JavaScript.
+   Tokens, it is not accessible from Web Platform APIs (such as those
+   commonly accessed via JavaScript in web browsers).
 
 8.  IANA Considerations
 

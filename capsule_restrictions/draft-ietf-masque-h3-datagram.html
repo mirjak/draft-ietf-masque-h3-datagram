@@ -1024,7 +1024,7 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Schinazi &amp; Pardue</td>
-<td class="center">Expires 29 August 2022</td>
+<td class="center">Expires 1 September 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1037,12 +1037,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dd class="internet-draft">draft-ietf-masque-h3-datagram-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-02-25" class="published">25 February 2022</time>
+<time datetime="2022-02-28" class="published">28 February 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-08-29">29 August 2022</time></dd>
+<dd class="expires"><time datetime="2022-09-01">1 September 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1097,7 +1097,7 @@ versions of HTTP.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 August 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 September 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1335,11 +1335,12 @@ received associated datagrams.<a href="#section-3-5" class="pilcrow">¶</a></p>
 that has not yet been created, the receiver SHALL either drop that datagram
 silently or buffer it temporarily while awaiting the creation of the
 corresponding stream.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">HTTP/3 datagrams MUST NOT be sent associated with streams that do not define
+<p id="section-3-7">HTTP/3 datagrams MUST only be sent with an association to a stream that supports
 semantics for HTTP Datagrams. For example, existing HTTP methods GET and POST do
-not define semantics for associated HTTP Datagrams. If an endpoint receives an
-HTTP/3 datagram associated with a method that has no known semantics for HTTP
-Datagrams, it MUST abort the corresponding stream with
+not define semantics for associated HTTP Datagrams; therefore, HTTP/3 datagrams
+cannot be sent associated with GET or POST request streams. If an endpoint
+receives an HTTP/3 datagram associated with a method that has no known semantics
+for HTTP Datagrams, it MUST abort the corresponding stream with
 H3_GENERAL_PROTOCOL_ERROR. Future extensions MAY remove these requirements if
 they define semantics for such HTTP Datagrams and negotiate mutual support.<a href="#section-3-7" class="pilcrow">¶</a></p>
 </section>
@@ -1604,8 +1605,9 @@ out". In other words, probing clients can learn whether a server supports this
 feature. Implementations that support this feature SHOULD always send this
 Settings parameter to avoid leaking the fact that there are applications using
 HTTP/3 datagrams enabled on this endpoint.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">Since use of the Capsule Protocol is restricted to new HTTP Upgrade Tokens, it is
-not accessible from JavaScript.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-2">Since use of the Capsule Protocol is restricted to new HTTP Upgrade Tokens, it
+is not accessible from Web Platform APIs (such as those commonly accessed via
+JavaScript in web browsers).<a href="#section-7-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana">
