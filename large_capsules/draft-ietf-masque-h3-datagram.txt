@@ -5,8 +5,8 @@
 MASQUE                                                       D. Schinazi
 Internet-Draft                                                Google LLC
 Intended status: Standards Track                               L. Pardue
-Expires: 29 August 2022                                       Cloudflare
-                                                        25 February 2022
+Expires: 1 September 2022                                     Cloudflare
+                                                        28 February 2022
 
 
                        Using Datagrams with HTTP
@@ -50,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 August 2022.
+   This Internet-Draft will expire on 1 September 2022.
 
 Copyright Notice
 
@@ -351,7 +351,7 @@ Table of Contents
    2^62-1, most applications will have their own limits on what datagran
    payload sizes are practical.  Implementations SHOULD take those
    limits into account when parsing DATAGRAM capsules: if an incoming
-   DATAGRAM capsule has a length that is known to be so high as to not
+   DATAGRAM capsule has a length that is known to be so large as to not
    be usable, the implementation SHOULD discard the capsule without
    buffering its contents into memory.
 
