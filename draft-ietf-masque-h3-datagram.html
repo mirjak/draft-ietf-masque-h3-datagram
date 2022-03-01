@@ -13,16 +13,16 @@ with a mechanism to send unreliable data while leveraging the security and
 congestion-control properties of QUIC. However, QUIC DATAGRAM frames do not
 provide a means to demultiplex application contexts. This document describes how
 to use QUIC DATAGRAM frames when the application protocol running over QUIC is
-HTTP/3. It associates datagrams with client-initiated bidirectional streams
-and defines an optional additional demultiplexing layer. Additionally, this
-document defines how to convey datagrams over prior versions of HTTP. 
+HTTP/3. It associates datagrams with client-initiated bidirectional streams.
+Additionally, this document defines a mechanism to convey datagrams over prior
+versions of HTTP. 
     " name="description">
-<meta content="xml2rfc 3.11.1" name="generator">
+<meta content="xml2rfc 3.12.3" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-masque-h3-datagram-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.11.1
-    Python 3.9.5
+  xml2rfc 3.12.3
+    Python 3.9.7
     appdirs 1.4.4
     ConfigArgParse 1.3
     google-i18n-address 2.5.0
@@ -30,13 +30,14 @@ document defines how to convey datagrams over prior versions of HTTP.
     intervaltree 3.1.0
     Jinja2 2.11.3
     kitchen 1.2.6
-    lxml 4.6.3
+    lxml 4.6.5
+    MarkupSafe 2.0.1
     pycountry 20.7.3
-    pyflakes 2.3.0
+    pyflakes 2.3.1
     PyYAML 5.4.1
-    requests 2.25.1
+    requests 2.26.0
     setuptools 52.0.0
-    six 1.15.0
+    six 1.16.0
 -->
 <link href="draft-ietf-masque-h3-datagram.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -640,36 +641,8 @@ hr {
 }
 
 /* index */
-.index ul {
-  margin: 0 0 0 1em;
-  padding: 0;
-  list-style: none;
-}
-.index ul ul {
-  margin: 0;
-}
-.index li {
-  margin: 0;
-  text-indent: -2em;
-  padding-left: 2em;
-  padding-bottom: 5px;
-}
-.indexIndex {
-  margin: 0.5em 0 1em;
-}
-.index a {
-  font-weight: 700;
-}
-/* make the index two-column on all but the smallest screens */
-@media (min-width: 500px) {
-  .index ul {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  .index ul ul {
-    column-count: 1;
-    column-gap: 0;
-  }
+#rfc\.index\.index + ul {
+  margin-left: 0;
 }
 
 /* authors */
@@ -1048,11 +1021,11 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP Datagrams</td>
-<td class="right">November 2021</td>
+<td class="right">March 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Schinazi &amp; Pardue</td>
-<td class="center">Expires 13 May 2022</td>
+<td class="center">Expires 2 September 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1038,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dd class="internet-draft">draft-ietf-masque-h3-datagram-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-11-09" class="published">9 November 2021</time>
+<time datetime="2022-03-01" class="published">1 March 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-05-13">13 May 2022</time></dd>
+<dd class="expires"><time datetime="2022-09-02">2 September 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1092,9 +1065,9 @@ with a mechanism to send unreliable data while leveraging the security and
 congestion-control properties of QUIC. However, QUIC DATAGRAM frames do not
 provide a means to demultiplex application contexts. This document describes how
 to use QUIC DATAGRAM frames when the application protocol running over QUIC is
-HTTP/3. It associates datagrams with client-initiated bidirectional streams
-and defines an optional additional demultiplexing layer. Additionally, this
-document defines how to convey datagrams over prior versions of HTTP.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+HTTP/3. It associates datagrams with client-initiated bidirectional streams.
+Additionally, this document defines a mechanism to convey datagrams over prior
+versions of HTTP.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1125,7 +1098,7 @@ document defines how to convey datagrams over prior versions of HTTP.<a href="#s
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 May 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 September 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1134,7 +1107,7 @@ document defines how to convey datagrams over prior versions of HTTP.<a href="#s
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2021 IETF Trust and the persons identified as the
+            Copyright (c) 2022 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1163,18 +1136,7 @@ document defines how to convey datagrams over prior versions of HTTP.<a href="#s
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-multiplexing" class="xref">Multiplexing</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-datagram-contexts" class="xref">Datagram Contexts</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-datagram-formats" class="xref">Datagram Formats</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
-                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="xref">2.3</a>.  <a href="#name-context-id-allocation" class="xref">Context ID Allocation</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-multiplexing" class="xref">Multiplexing</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-http-3-datagram-format" class="xref">HTTP/3 DATAGRAM Format</a></p>
@@ -1186,24 +1148,10 @@ document defines how to convey datagrams over prior versions of HTTP.<a href="#s
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-capsule-protocol" class="xref">Capsule Protocol</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-requirements" class="xref">Requirements</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-the-capsule-protocol-header" class="xref">The Capsule-Protocol Header</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-intermediary-processing" class="xref">Intermediary Processing</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-capsule-types" class="xref">Capsule Types</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.1">
-                    <p id="section-toc.1-1.4.2.4.2.1.1"><a href="#section-4.4.1" class="xref">4.4.1</a>.  <a href="#name-the-datagram-registration-c" class="xref">The Datagram Registration Capsules</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.2">
-                    <p id="section-toc.1-1.4.2.4.2.2.1"><a href="#section-4.4.2" class="xref">4.4.2</a>.  <a href="#name-the-datagram-close-capsule" class="xref">The Datagram Close Capsule</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4.2.3">
-                    <p id="section-toc.1-1.4.2.4.2.3.1"><a href="#section-4.4.3" class="xref">4.4.3</a>.  <a href="#name-the-datagram-capsules" class="xref">The Datagram Capsules</a></p>
-</li>
-                </ul>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-the-datagram-capsule" class="xref">The DATAGRAM Capsule</a></p>
 </li>
             </ul>
 </li>
@@ -1216,78 +1164,52 @@ document defines how to convey datagrams over prior versions of HTTP.<a href="#s
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-the-sec-use-datagram-contex" class="xref">The Sec-Use-Datagram-Contexts HTTP Header</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-prioritization" class="xref">Prioritization</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-prioritization" class="xref">Prioritization</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-http-3-settings-parameter" class="xref">HTTP/3 SETTINGS Parameter</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-http-header-field-name" class="xref">HTTP Header Field Name</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-capsule-types" class="xref">Capsule Types</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-references" class="xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
-                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-http-3-settings-parameter" class="xref">HTTP/3 SETTINGS Parameter</a></p>
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-http-header-field-name" class="xref">HTTP Header Field Name</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
-                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="xref">9.3</a>.  <a href="#name-capsule-types-2" class="xref">Capsule Types</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.4">
-                <p id="section-toc.1-1.9.2.4.1"><a href="#section-9.4" class="xref">9.4</a>.  <a href="#name-datagram-format-types" class="xref">Datagram Format Types</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.5">
-                <p id="section-toc.1-1.9.2.5.1"><a href="#section-9.5" class="xref">9.5</a>.  <a href="#name-context-close-codes" class="xref">Context Close Codes</a></p>
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-references" class="xref">References</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-examples" class="xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
+                <p id="section-toc.1-1.10.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-connect-udp" class="xref">CONNECT-UDP</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
+                <p id="section-toc.1-1.10.2.2.1"><a href="#appendix-A.2" class="xref">A.2</a>.  <a href="#name-webtransport" class="xref">WebTransport</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-examples" class="xref">Examples</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-connect-udp" class="xref">CONNECT-UDP</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-A.2" class="xref">A.2</a>.  <a href="#name-connect-udp-with-timestamp-" class="xref">CONNECT-UDP with Timestamp Extension</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2.2.1">
-                    <p id="section-toc.1-1.11.2.2.2.1.1"><a href="#appendix-A.2.1" class="xref">A.2.1</a>.  <a href="#name-with-delay" class="xref">With Delay</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2.2.2">
-                    <p id="section-toc.1-1.11.2.2.2.2.1"><a href="#appendix-A.2.2" class="xref">A.2.2</a>.  <a href="#name-successful-optimistic" class="xref">Successful Optimistic</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2.2.3">
-                    <p id="section-toc.1-1.11.2.2.2.3.1"><a href="#appendix-A.2.3" class="xref">A.2.3</a>.  <a href="#name-optimistic-but-unsupported" class="xref">Optimistic but Unsupported</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
-                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-A.3" class="xref">A.3</a>.  <a href="#name-connect-ip-with-ip-compress" class="xref">CONNECT-IP with IP compression</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
-                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-A.4" class="xref">A.4</a>.  <a href="#name-webtransport" class="xref">WebTransport</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-C" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1305,28 +1227,12 @@ properties of QUIC. However, QUIC DATAGRAM frames do not provide a means to
 demultiplex application contexts. This document describes how to use QUIC
 DATAGRAM frames when the application protocol running over QUIC is HTTP/3
 <span>[<a href="#H3" class="xref">H3</a>]</span>. It associates datagrams with client-initiated
-bidirectional streams and defines an optional additional demultiplexing layer.
-Additionally, this document defines how to convey datagrams over prior versions
-of HTTP.<a href="#section-1-1" class="pilcrow">¶</a></p>
+bidirectional streams. Additionally, this document defines a mechanism to convey
+datagrams over prior versions of HTTP.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">This document is structured as follows:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-3.1">
-          <p id="section-1-3.1.1"><a href="#multiplexing" class="xref">Section 2</a> presents core concepts for multiplexing across HTTP versions.<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-1-3.1.2.1">
-              <a href="#datagram-contexts" class="xref">Section 2.1</a> defines datagram contexts, an optional end-to-end
-multiplexing concept scoped to each HTTP request. Whether contexts are in
-use is defined in <a href="#context-hdr" class="xref">Section 6</a>.<a href="#section-1-3.1.2.1" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="section-1-3.1.2.2">
-              <a href="#datagram-formats" class="xref">Section 2.2</a> defines datagram formats, which are scoped to contexts.
-Formats communicate the format and encoding of datagrams sent using the
-associated context.<a href="#section-1-3.1.2.2" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="section-1-3.1.2.3">Contexts are identified using a variable-length integer. Requirements for
-allocating identifier values are detailed in <a href="#context-id-alloc" class="xref">Section 2.3</a>.<a href="#section-1-3.1.2.3" class="pilcrow">¶</a>
-</li>
-          </ul>
+          <a href="#multiplexing" class="xref">Section 2</a> presents core concepts for multiplexing across HTTP versions.<a href="#section-1-3.1" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-1-3.2">
           <a href="#format" class="xref">Section 3</a> defines how QUIC DATAGRAM frames are used with HTTP/3. <a href="#setting" class="xref">Section 5</a>
@@ -1339,15 +1245,8 @@ Data streams are initiated using special-purpose HTTP requests, after which
 Capsules, an end-to-end message, can be sent.<a href="#section-1-3.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-3.3.2.1">
-              <p id="section-1-3.3.2.1.1">The following Capsule types are defined, together with guidance for defining new types:<a href="#section-1-3.3.2.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-1-3.3.2.1.2.1">Datagram registration capsules <a href="#register-capsule" class="xref">Section 4.4.1</a><a href="#section-1-3.3.2.1.2.1" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="section-1-3.3.2.1.2.2">Datagram close capsule <a href="#close-capsule" class="xref">Section 4.4.2</a><a href="#section-1-3.3.2.1.2.2" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="section-1-3.3.2.1.2.3">Datagram capsules <a href="#datagram-capsule" class="xref">Section 4.4.3</a><a href="#section-1-3.3.2.1.2.3" class="pilcrow">¶</a>
-</li>
-              </ul>
+              <a href="#datagram-capsule" class="xref">Section 4.3</a> defines Datagram Capsule types, along with guidance
+for specifying new capsule types.<a href="#section-1-3.3.2.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
@@ -1370,89 +1269,14 @@ when, and only when, they appear in all capitals, as shown here.<a href="#sectio
       <h2 id="name-multiplexing">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-multiplexing" class="section-name selfRef">Multiplexing</a>
       </h2>
-<p id="section-2-1">When running over HTTP/3, multiple exchanges of datagrams need the ability to
-coexist on a given QUIC connection. To allow this, HTTP datagrams contain two
-layers of multiplexing. First, the QUIC DATAGRAM frame payload starts with an
-encoded stream identifier that associates the datagram with a given QUIC
-stream. Second, datagrams optionally carry a context identifier (see
-<a href="#datagram-contexts" class="xref">Section 2.1</a>) that allows multiplexing multiple datagram contexts
-related to a given HTTP request. Conceptually, the first layer of multiplexing
-is per-hop, while the second is end-to-end.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">When running over HTTP/2, the first level of demultiplexing is provided by the
-HTTP/2 framing layer. When running over HTTP/1, requests are strictly
-serialized in the connection, therefore the first layer of demultiplexing is
-not needed.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<div id="datagram-contexts">
-<section id="section-2.1">
-        <h3 id="name-datagram-contexts">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-datagram-contexts" class="section-name selfRef">Datagram Contexts</a>
-        </h3>
-<p id="section-2.1-1">Within the scope of a given HTTP request, contexts provide an additional
-demultiplexing layer. Contexts determine the encoding of datagrams, and can be
-used to implicitly convey metadata. For example, contexts can be used for
-compression to elide some parts of the datagram: the context identifier then
-maps to a compression context that the receiver can use to reconstruct the
-elided data.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">While stream IDs are a per-hop concept, context IDs are an end-to-end concept.
-In other words, if a datagram travels through one or more intermediaries on its
-way from client to server, the stream ID will most likely change from hop to
-hop, but the context ID will remain the same. Context IDs are opaque to
-intermediaries.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
-<p id="section-2.1-3">Contexts are OPTIONAL to implement for both endpoints. Intermediaries do not
-require any context-specific software to enable contexts. When contexts are
-supported by the implementation, their use is optional and can be selected on
-each stream. Endpoints inform their peer of whether they wish to use contexts
-via the Sec-Use-Datagram-Contexts HTTP header, see <a href="#context-hdr" class="xref">Section 6</a>.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.1-4">When contexts are used, they are identified within the scope of a given request
-by a numeric value, referred to as the context ID. A context ID is a 62-bit
-integer (0 to 2<sup>62</sup>-1).<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="datagram-formats">
-<section id="section-2.2">
-        <h3 id="name-datagram-formats">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-datagram-formats" class="section-name selfRef">Datagram Formats</a>
-        </h3>
-<p id="section-2.2-1">When an endpoint registers a datagram context (or the lack of contexts), it
-communicates the format (i.e., the semantics and encoding) of datagrams sent
-using this context. This is acccomplished by sending a Datagram Format Type as
-part of the datagram registration capsule, see <a href="#register-capsule" class="xref">Section 4.4.1</a>. This type
-identifier is registered with IANA (see <a href="#iana-format-types" class="xref">Section 9.4</a>) and allows
-applications that use HTTP Datagrams to indicate what the content of datagrams
-are. Registration capsules carry a Datagram Format Additional Data field which
-allows sending some additional information that would impact the format of
-datagrams.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.2-2">For example, a protocol which proxies IP packets can define a Datagram Format
-Type which represents an IP packet. The corresponding Datagram Format
-Additional Data field would be empty. An extension to such a protocol that
-wishes to compress IP addresses could define a distinct Datagram Format Type
-and exchange two IP addresses via the Datagram Format Additional Data field.
-Then any datagrams with that type would contain the IP packet with addresses
-elided.<a href="#section-2.2-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="context-id-alloc">
-<section id="section-2.3">
-        <h3 id="name-context-id-allocation">
-<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-context-id-allocation" class="section-name selfRef">Context ID Allocation</a>
-        </h3>
-<p id="section-2.3-1">Implementations of HTTP Datagrams that support datagram contexts MUST provide
-a context ID allocation service. That service will allow applications
-co-located with HTTP to request a unique context ID that they can subsequently
-use for their own purposes. The HTTP implementation will then parse the context
-ID of incoming HTTP Datagrams and use it to deliver the frame to the
-appropriate application context.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3-2">Even-numbered context IDs are client-initiated, while odd-numbered context IDs
-are server-initiated. This means that an HTTP client implementation of the
-context ID allocation service MUST only provide even-numbered IDs, while a
-server implementation MUST only provide odd-numbered IDs. Note that, once
-allocated, any context ID can be used by both client and server - only
-allocation carries separate namespaces to avoid requiring synchronization.
-Additionally, note that the context ID namespace is tied to a given HTTP
-request: it is possible for the same numeral context ID to be used
-simultaneously in distinct requests.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
-</section>
-</div>
+<p id="section-2-1">All HTTP Datagrams are associated with an HTTP request.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">When running over HTTP/3, multiple exchanges of datagrams need the ability to
+coexist on a given QUIC connection. To allow this, the QUIC DATAGRAM frame
+payload starts with an encoded stream identifier that associates the datagram
+with a request stream.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<p id="section-2-3">When running over HTTP/2, demultiplexing is provided by the HTTP/2 framing
+layer. When running over HTTP/1, requests are strictly serialized in the
+connection, therefore demultiplexing is not needed.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="format">
@@ -1469,7 +1293,6 @@ of <span>[<a href="#QUIC" class="xref">QUIC</a>]</span>):<a href="#section-3-1" 
 <pre>
 HTTP/3 Datagram {
   Quarter Stream ID (i),
-  [Context ID (i)],
   HTTP Datagram Payload (..),
 }
 </pre>
@@ -1479,67 +1302,38 @@ HTTP/3 Datagram {
         </figcaption></figure>
 </div>
 <span class="break"></span><dl class="dlParallel" id="section-3-3">
-        <dt id="section-3-3.1">
-Quarter Stream ID:  </dt>
+        <dt id="section-3-3.1">Quarter Stream ID:</dt>
         <dd style="margin-left: 1.5em" id="section-3-3.2">
           <p id="section-3-3.2.1">A variable-length integer that contains the value of the client-initiated
 bidirectional stream that this datagram is associated with, divided by four (the
 division by four stems from the fact that HTTP requests are sent on
 client-initiated bidirectional streams, and those have stream IDs that are
 divisible by four). The largest legal QUIC stream ID value is 2<sup>62</sup>-1,
-so the largest legal value of Quarter Stream ID is (2<sup>62</sup>-1) / 4.
-Receipt of a frame that includes a larger value MUST be treated as a connection
-error of type FRAME_ENCODING_ERROR.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+so the largest legal value of Quarter Stream ID is 2<sup>60</sup>-1. Receipt of
+a frame that includes a larger value MUST be treated as a connection error of
+type FRAME_ENCODING_ERROR.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-3-3.3">
-Context ID:  </dt>
+<dt id="section-3-3.3">HTTP Datagram Payload:</dt>
         <dd style="margin-left: 1.5em" id="section-3-3.4">
-          <p id="section-3-3.4.1">A variable-length integer indicating the context ID of the datagram (see
-<a href="#datagram-contexts" class="xref">Section 2.1</a>). Whether or not this field is present depends on whether
-datagram contexts are in use on this stream, see <a href="#context-hdr" class="xref">Section 6</a>. If this QUIC
-DATAGRAM frame is reordered and arrives before the receiver knows whether
-datagram contexts are in use on this stream, then the receiver cannot parse
-this datagram and the receiver MUST either drop that datagram silently or
-buffer it temporarily.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-<dt id="section-3-3.5">
-HTTP Datagram Payload:  </dt>
-        <dd style="margin-left: 1.5em" id="section-3-3.6">
-          <p id="section-3-3.6.1">The payload of the datagram, whose semantics are defined by individual
-applications. Note that this field can be empty.<a href="#section-3-3.6.1" class="pilcrow">¶</a></p>
+          <p id="section-3-3.4.1">The payload of the datagram, whose semantics are defined by individual
+applications. Note that this field can be empty.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
-<p id="section-3-4">Intermediaries parse the Quarter Stream ID field in order to associate the QUIC
-DATAGRAM frame with a stream. If an intermediary receives a QUIC DATAGRAM frame
-whose payload is too short to allow parsing the Quarter Stream ID field, the
-intermediary MUST treat it as an HTTP/3 connection error of type
-H3_GENERAL_PROTOCOL_ERROR. The Context ID field is optional and whether it is
-present or not is decided end-to-end by the endpoints, see <a href="#context-hdr" class="xref">Section 6</a>.
-Therefore intermediaries cannot know whether the Context ID field is present or
-absent and they MUST ignore any HTTP/3 Datagram fields after the Quarter Stream
-ID.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">Endpoints parse both the Quarter Stream ID field and the Context ID field in
-order to associate the QUIC DATAGRAM frame with a stream and context within
-that stream. If an endpoint receives a QUIC DATAGRAM frame whose payload is too
-short to allow parsing the Quarter Stream ID field, the endpoint MUST treat it
-as an HTTP/3 connection error of type H3_GENERAL_PROTOCOL_ERROR. If an endpoint
-receives a QUIC DATAGRAM frame whose payload is long enough to allow parsing
-the Quarter Stream ID field but too short to allow parsing the Context ID
-field, the endpoint MUST abruptly terminate the corresponding stream with a
-stream error of type H3_GENERAL_PROTOCOL_ERROR.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">Endpoints MUST NOT send HTTP/3 datagrams unless the corresponding stream's send
+<p id="section-3-4">Receipt of a QUIC DATAGRAM frame whose payload is too short to allow parsing the
+Quarter Stream ID field MUST be treated as an HTTP/3 connection error of type
+H3_GENERAL_PROTOCOL_ERROR.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">Endpoints MUST NOT send HTTP/3 datagrams unless the corresponding stream's send
 side is open. On a given endpoint, once the receive side of a stream is closed,
 incoming datagrams for this stream are no longer expected so the endpoint can
 release related state. Endpoints MAY keep state for a short time to account for
 reordering. Once the state is released, the endpoint MUST silently drop
-received associated datagrams.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
+received associated datagrams.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
 that has not yet been created, the receiver SHALL either drop that datagram
 silently or buffer it temporarily while awaiting the creation of the
-corresponding stream.<a href="#section-3-7" class="pilcrow">¶</a></p>
+corresponding stream.<a href="#section-3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="capsule">
@@ -1548,30 +1342,40 @@ corresponding stream.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-capsules" class="section-name selfRef">Capsules</a>
       </h2>
 <p id="section-4-1">This specification introduces the Capsule Protocol. The Capsule Protocol is a
-sequence of type-length-value tuples that allows endpoints to reliably
-communicate request-related information end-to-end, even in the presence of
-HTTP intermediaries.<a href="#section-4-1" class="pilcrow">¶</a></p>
+sequence of type-length-value tuples that new HTTP Methods or new HTTP Upgrade
+Tokens can choose to use. It allows endpoints to reliably communicate
+request-related information end-to-end on HTTP request streams, even in the
+presence of HTTP intermediaries. The Capsule Protocol can be used to exchange
+HTTP Datagrams when HTTP is running over a transport that does not support the
+QUIC DATAGRAM frame.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">This specification defines the "data stream" of an HTTP request as the
+bidirectional stream of bytes that follow the headers in both directions. In
+HTTP/1.x, the data stream consists of all bytes on the connection that follow
+the blank line that concludes either the request header section, or the 2xx
+(Successful) response header section. In HTTP/2 and HTTP/3, the data stream of a
+given HTTP request consists of all bytes sent in DATA frames with the
+corresponding stream ID. The concept of a data stream is particularly relevant
+for methods such as CONNECT where there is no HTTP message content after the
+headers.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Note that use of the Capsule Protocol is not required to use HTTP Datagrams. If
+a new HTTP Method or Upgrade Token is only defined over transports that support
+QUIC DATAGRAM frames, they might not need a stream encoding. Additionally,
+definitions of new HTTP Methods or of new HTTP Upgrade Tokens can use HTTP
+Datagrams with their own data stream protocol. However, new HTTP Method or
+Upgrade Tokens SHOULD use the Capsule Protocol unless they have a good reason
+not to.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <div id="capsule-protocol">
 <section id="section-4.1">
         <h3 id="name-capsule-protocol">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-capsule-protocol" class="section-name selfRef">Capsule Protocol</a>
         </h3>
-<p id="section-4.1-1">This specification defines the "data stream" of an HTTP request as the
-bidirectional stream of bytes that follow the headers in both directions. In
-HTTP/1.x, the data stream consists of all bytes on the connection that follow
-the blank line that concludes either the request header section, or the 2xx
-(Successful) response header section. In HTTP/2 and HTTP/3, the data stream of
-a given HTTP request consists of all bytes sent in DATA frames with the
-corresponding stream ID. The concept of a data stream is particularly relevant
-for methods such as CONNECT where there is no HTTP message content after the
-headers.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">Definitions of new HTTP Methods or of new HTTP Upgrade Tokens can state that
+<p id="section-4.1-1">Definitions of new HTTP Methods or of new HTTP Upgrade Tokens can state that
 their data stream uses the Capsule Protocol. If they do so, that means that the
 contents of their data stream uses the following format (using the notation
-from the "Notational Conventions" section of <span>[<a href="#QUIC" class="xref">QUIC</a>]</span>):<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+from the "Notational Conventions" section of <span>[<a href="#QUIC" class="xref">QUIC</a>]</span>):<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <span id="name-capsule-protocol-stream-for"></span><div id="capsule-stream-format">
 <figure id="figure-2">
-          <div class="alignLeft art-text artwork" id="section-4.1-3.1">
+          <div class="alignLeft art-text artwork" id="section-4.1-2.1">
 <pre>
 Capsule Protocol {
   Capsule (..) ...,
@@ -1584,7 +1388,7 @@ Capsule Protocol {
 </div>
 <span id="name-capsule-format"></span><div id="capsule-format">
 <figure id="figure-3">
-          <div class="alignLeft art-text artwork" id="section-4.1-4.1">
+          <div class="alignLeft art-text artwork" id="section-4.1-3.1">
 <pre>
 Capsule {
   Capsule Type (i),
@@ -1597,360 +1401,116 @@ Capsule {
 <a href="#name-capsule-format" class="selfRef">Capsule Format</a>
           </figcaption></figure>
 </div>
-<span class="break"></span><dl class="dlParallel" id="section-4.1-5">
-          <dt id="section-4.1-5.1">
-Capsule Type:  </dt>
-          <dd style="margin-left: 1.5em" id="section-4.1-5.2">
-            <p id="section-4.1-5.2.1">A variable-length integer indicating the Type of the capsule. Endpoints that
+<span class="break"></span><dl class="dlParallel" id="section-4.1-4">
+          <dt id="section-4.1-4.1">Capsule Type:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-4.2">
+            <p id="section-4.1-4.2.1">A variable-length integer indicating the Type of the capsule. Endpoints that
 receive a capsule with an unknown Capsule Type MUST silently skip over that
-capsule.<a href="#section-4.1-5.2.1" class="pilcrow">¶</a></p>
+capsule.<a href="#section-4.1-4.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-4.1-5.3">
-Capsule Length:  </dt>
-          <dd style="margin-left: 1.5em" id="section-4.1-5.4">
-            <p id="section-4.1-5.4.1">The length of the Capsule Value field following this field, encoded as a
-variable-length integer. Note that this field can have a value of zero.<a href="#section-4.1-5.4.1" class="pilcrow">¶</a></p>
+<dt id="section-4.1-4.3">Capsule Length:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-4.4">
+            <p id="section-4.1-4.4.1">The length of the Capsule Value field following this field, encoded as a
+variable-length integer. Note that this field can have a value of zero.<a href="#section-4.1-4.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-4.1-5.5">
-Capsule Value:  </dt>
-          <dd style="margin-left: 1.5em" id="section-4.1-5.6">
-            <p id="section-4.1-5.6.1">The payload of this capsule. Its semantics are determined by the value of the
-Capsule Type field.<a href="#section-4.1-5.6.1" class="pilcrow">¶</a></p>
+<dt id="section-4.1-4.5">Capsule Value:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.1-4.6">
+            <p id="section-4.1-4.6.1">The payload of this capsule. Its semantics are determined by the value of the
+Capsule Type field.<a href="#section-4.1-4.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
+<p id="section-4.1-5">Because new protocols or extensions may involve defining new capsule types,
+intermediaries that wish to allow for future extensibility SHOULD forward
+capsules unmodified. One exception to this rule is the DATAGRAM capsule; see
+<a href="#datagram-capsule" class="xref">Section 4.3</a>. An intermediary can identify the use of the capsule
+protocol either through the presence of the Capsule-Protocol header field
+(<a href="#hdr" class="xref">Section 4.2</a>) or by understanding the chosen HTTP Upgrade token. An intermediary
+that identifies the use of the capsule protocol MAY convert between DATAGRAM
+capsules and QUIC DATAGRAM frames when forwarding. Definitions of new Capsule
+Types MAY specify optional custom intermediary processing.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">Endpoints which receive a Capsule with an unknown Capsule Type MUST silently
+drop that Capsule.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">By virtue of the definition of the data stream, the Capsule Protocol is not in
+use on responses unless the response includes a 2xx (Successful) status code.
+The Capsule Protocol MUST NOT be used with messages that contain Content-Length
+or Transfer-Encoding header fields.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="requirements">
+<div id="hdr">
 <section id="section-4.2">
-        <h3 id="name-requirements">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-requirements" class="section-name selfRef">Requirements</a>
+        <h3 id="name-the-capsule-protocol-header">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-the-capsule-protocol-header" class="section-name selfRef">The Capsule-Protocol Header</a>
         </h3>
-<p id="section-4.2-1">If the definition of an HTTP Method or HTTP Upgrade Token states that it uses
-the capsule protocol, its implementations MUST follow the following
-requirements:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4.2-2.1">A server MUST NOT send any Transfer-Encoding or Content-Length header fields
-in a 2xx (Successful) response. If a client receives a Content-Length or
-Transfer-Encoding header fields in a successful response, it MUST treat that
-response as malformed.<a href="#section-4.2-2.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-4.2-2.2">A request message does not have content.<a href="#section-4.2-2.2" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-4.2-2.3">A successful response message does not have content.<a href="#section-4.2-2.3" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-4.2-2.4">Responses are not cacheable.<a href="#section-4.2-2.4" class="pilcrow">¶</a>
-</li>
-        </ul>
-</section>
-</div>
-<div id="intermediary-processing">
-<section id="section-4.3">
-        <h3 id="name-intermediary-processing">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-intermediary-processing" class="section-name selfRef">Intermediary Processing</a>
-        </h3>
-<p id="section-4.3-1">Intermediaries MUST operate in one of the two following modes:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-4.3-2">
-          <dt id="section-4.3-2.1">
-Pass-through mode:  </dt>
-          <dd style="margin-left: 1.5em" id="section-4.3-2.2">
-            <p id="section-4.3-2.2.1">In this mode, the intermediary forwards the data stream between two
-associated streams without any modification of the data stream.<a href="#section-4.3-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-4.3-2.3">
-Participant mode:  </dt>
-          <dd style="margin-left: 1.5em" id="section-4.3-2.4">
-            <p id="section-4.3-2.4.1">In this mode, the intermediary terminates the data stream and parses all
-Capsule Type and Capsule Length fields it receives.<a href="#section-4.3-2.4.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-</dl>
-<p id="section-4.3-3">Each Capsule Type determines whether it is opaque or transparent to
-intermediaries in participant mode: opaque capsules are forwarded unmodified
-while transparent ones can be parsed, added, or removed by intermediaries.
-Intermediaries MAY modify the contents of the Capsule Data field of transparent
-capsule types.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
-<p id="section-4.3-4">Unless otherwise specified, all Capsule Types are defined as opaque to
-intermediaries. Intermediaries MUST forward all received opaque CAPSULE frames
-in their unmodified entirety. Intermediaries MUST NOT send any opaque CAPSULE
-frames other than the ones it is forwarding. All Capsule Types defined in this
-document are opaque, with the exception of the datagram capsules, see
-<a href="#datagram-capsule" class="xref">Section 4.4.3</a>. Definitions of new Capsule Types MAY specify that the
-newly introduced type is transparent. Intermediaries MUST treat unknown Capsule
-Types as opaque.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.3-5">Intermediaries respect the order of opaque CAPSULE frames: if an intermediary
-receives two opaque CAPSULE frames in a given order, it MUST forward them in
-the same order.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
-<p id="section-4.3-6">Endpoints which receive a Capsule with an unknown Capsule Type MUST silently
-drop that Capsule.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="capsule-types">
-<section id="section-4.4">
-        <h3 id="name-capsule-types">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-capsule-types" class="section-name selfRef">Capsule Types</a>
-        </h3>
-<div id="register-capsule">
-<section id="section-4.4.1">
-          <h4 id="name-the-datagram-registration-c">
-<a href="#section-4.4.1" class="section-number selfRef">4.4.1. </a><a href="#name-the-datagram-registration-c" class="section-name selfRef">The Datagram Registration Capsules</a>
-          </h4>
-<p id="section-4.4.1-1">This document defines the REGISTER_DATAGRAM and REGISTER_DATAGRAM_CONTEXT
-capsules types, known collectively as the datagram registration capsules (see
-<a href="#iana-types" class="xref">Section 9.3</a> for the value of the capsule types). The REGISTER_DATAGRAM
-capsule is used by endpoints to inform their peer of the encoding and semantics
-of all datagrams associated with a stream. The REGISTER_DATAGRAM_CONTEXT
-capsule is used by endpoints to inform their peer of the encoding and semantics
-of all datagrams associated with a given context ID on this stream.<a href="#section-4.4.1-1" class="pilcrow">¶</a></p>
-<span id="name-register_datagram_context-c"></span><div id="register-capsule-format">
-<figure id="figure-4">
-            <div class="alignLeft art-text artwork" id="section-4.4.1-2.1">
+<p id="section-4.2-1">Definitions of new HTTP Methods or of new HTTP Upgrade Tokens that use the
+Capsule Protocol MAY use the Capsule-Protocol header field to simplify
+intermediary processing.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">"Capsule-Protocol" is an Item Structured Header <span>[<a href="#RFC8941" class="xref">RFC8941</a>]</span>. Its value MUST be
+a Boolean. Its ABNF is:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2-3">
 <pre>
-Datagram Registration Capsule {
-  Type (i) = REGISTER_DATAGRAM or REGISTER_DATAGRAM_CONTEXT,
-  Length (i),
-  [Context ID (i)],
-  Datagram Format Type (i),
-  Datagram Format Additional Data (..),
-}
-</pre>
+Capsule-Protocol = sf-boolean parameters
+</pre><a href="#section-4.2-3" class="pilcrow">¶</a>
 </div>
-<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
-<a href="#name-register_datagram_context-c" class="selfRef">REGISTER_DATAGRAM_CONTEXT Capsule Format</a>
-            </figcaption></figure>
-</div>
-<span class="break"></span><dl class="dlParallel" id="section-4.4.1-3">
-            <dt id="section-4.4.1-3.1">
-Context ID:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.1-3.2">
-              <p id="section-4.4.1-3.2.1">A variable-length integer indicating the context ID to register (see
-<a href="#datagram-contexts" class="xref">Section 2.1</a>). This field is present in REGISTER_DATAGRAM_CONTEXT
-capsules but not in REGISTER_DATAGRAM capsules. If a REGISTER_DATAGRAM capsule
-is used on a stream where datagram contexts are in use, it is associated with
-context ID 0. REGISTER_DATAGRAM_CONTEXT capsules MUST NOT carry context ID 0 as
-that context ID is conveyed using the REGISTER_DATAGRAM capsule.<a href="#section-4.4.1-3.2.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-4.4.1-3.3">
-Datagram Format Type:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.1-3.4">
-              <p id="section-4.4.1-3.4.1">A variable-length integer that defines the semantics and encoding of the HTTP
-Datagram Payload field of datagrams with this context ID, see
-<a href="#datagram-formats" class="xref">Section 2.2</a>.<a href="#section-4.4.1-3.4.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-4.4.1-3.5">
-Datagram Format Additional Data:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.1-3.6">
-              <p id="section-4.4.1-3.6.1">This field carries additional information that impact the format of datagrams
-with this context ID, see <a href="#datagram-formats" class="xref">Section 2.2</a>.<a href="#section-4.4.1-3.6.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-</dl>
-<p id="section-4.4.1-4">Note that these registrations are unilateral and bidirectional: the sender of
-the capsule unilaterally defines the semantics it will apply to the datagrams
-it sends and receives using this context ID. Once a context ID is registered,
-it can be used in both directions.<a href="#section-4.4.1-4" class="pilcrow">¶</a></p>
-<p id="section-4.4.1-5">Endpoints MUST NOT send HTTP Datagrams until they have either sent or received
-a datagram registration capsule with the same Context ID. However, reordering
-can cause HTTP Datagrams to be received with an unknown Context ID. Receipt of
-such HTTP datagrams MUST NOT be treated as an error. Endpoints SHALL drop the
-HTTP Datagram silently, or buffer it temporarily while awaiting the
-corresponding datagram registration capsule. Intermediaries SHALL drop the HTTP
-Datagram silently, MAY buffer it, or forward it on immediately.<a href="#section-4.4.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.4.1-6">Endpoints MUST NOT register the same Context ID twice on the same stream. This
-also applies to Context IDs that have been closed using a
-CLOSE_DATAGRAM_CONTEXT capsule. Clients MUST NOT register server-initiated
-Context IDs and servers MUST NOT register client-initiated Context IDs. If an
-endpoint receives a REGISTER_DATAGRAM_CONTEXT capsule that violates one or more
-of these requirements, the endpoint MUST abruptly terminate the corresponding
-stream with a stream error of type H3_GENERAL_PROTOCOL_ERROR.<a href="#section-4.4.1-6" class="pilcrow">¶</a></p>
-<p id="section-4.4.1-7">If datagrams contexts are not in use, the client is responsible for choosing
-the datagram format and informing the server via a REGISTER_DATAGRAM capsule.
-Servers MUST NOT send the REGISTER_DATAGRAM capsule. If a client receives a
-REGISTER_DATAGRAM capsule, the client MUST abruptly terminate the corresponding
-stream with a stream error of type H3_GENERAL_PROTOCOL_ERROR.<a href="#section-4.4.1-7" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="close-capsule">
-<section id="section-4.4.2">
-          <h4 id="name-the-datagram-close-capsule">
-<a href="#section-4.4.2" class="section-number selfRef">4.4.2. </a><a href="#name-the-datagram-close-capsule" class="section-name selfRef">The Datagram Close Capsule</a>
-          </h4>
-<p id="section-4.4.2-1">The CLOSE_DATAGRAM_CONTEXT capsule (see <a href="#iana-types" class="xref">Section 9.3</a> for the value of the
-capsule type) allows an endpoint to inform its peer that it will no longer send
-or parse received datagrams associated with a given context ID.<a href="#section-4.4.2-1" class="pilcrow">¶</a></p>
-<span id="name-close_datagram_context-caps"></span><div id="close-capsule-format">
-<figure id="figure-5">
-            <div class="alignLeft art-text artwork" id="section-4.4.2-2.1">
-<pre>
-CLOSE_DATAGRAM_CONTEXT Capsule {
-  Type (i) = CLOSE_DATAGRAM_CONTEXT,
-  Length (i),
-  Context ID (i),
-  Close Code (i),
-  Close Details (..),
-}
-</pre>
-</div>
-<figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
-<a href="#name-close_datagram_context-caps" class="selfRef">CLOSE_DATAGRAM_CONTEXT Capsule Format</a>
-            </figcaption></figure>
-</div>
-<span class="break"></span><dl class="dlParallel" id="section-4.4.2-3">
-            <dt id="section-4.4.2-3.1">
-Context ID:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.2-3.2">
-              <p id="section-4.4.2-3.2.1">The context ID to close.<a href="#section-4.4.2-3.2.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-4.4.2-3.3">
-Close Code:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.2-3.4">
-              <p id="section-4.4.2-3.4.1">The close code allows an endpoint to provide additional information as to why
-a datagram context was closed. <a href="#close-codes" class="xref">Section 4.4.2.1</a> defines a set of codes, the
-circumstances under which an implementation sends them, and how receivers react.<a href="#section-4.4.2-3.4.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-4.4.2-3.5">
-Close Details:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.2-3.6">
-              <p id="section-4.4.2-3.6.1">This is meant for debugging purposes. It consists of a human-readable string
-encoded in UTF-8.<a href="#section-4.4.2-3.6.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-</dl>
-<p id="section-4.4.2-4">Note that this close is unilateral and bidirectional: the sender of the frame
-unilaterally informs its peer of the closure. Endpoints can use
-CLOSE_DATAGRAM_CONTEXT capsules to close a context that was initially
-registered by either themselves, or by their peer. Endpoints MAY use the
-CLOSE_DATAGRAM_CONTEXT capsule to immediately reject a context that was just
-registered using a REGISTER_DATAGRAM_CONTEXT capsule if they find its Datagram
-Format Type field to be unacceptable.<a href="#section-4.4.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.4.2-5">After an endpoint has either sent or received a CLOSE_DATAGRAM_CONTEXT frame,
-it MUST NOT send any HTTP Datagrams with that Context ID. However, due to
-reordering, an endpoint that receives an HTTP Datagram with a closed Context ID
-MUST NOT treat it as an error, it SHALL instead drop the HTTP Datagram
-silently.<a href="#section-4.4.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.4.2-6">Endpoints MUST NOT close a Context ID that was not previously registered.
-Endpoints MUST NOT close a Context ID that has already been closed. If an
-endpoint receives a CLOSE_DATAGRAM_CONTEXT capsule that violates one or more of
-these requirements, the endpoint MUST abruptly terminate the corresponding
-stream with a stream error of type H3_GENERAL_PROTOCOL_ERROR.<a href="#section-4.4.2-6" class="pilcrow">¶</a></p>
-<div id="close-codes">
-<section id="section-4.4.2.1">
-            <h5 id="name-close-codes">
-<a href="#section-4.4.2.1" class="section-number selfRef">4.4.2.1. </a><a href="#name-close-codes" class="section-name selfRef">Close Codes</a>
-            </h5>
-<p id="section-4.4.2.1-1">Close codes are intended to allow implementations to react differently when they
-receive them - for example, some close codes require the receiver to not open
-another context under certain conditions.<a href="#section-4.4.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.4.2.1-2">This specification defines the close codes below. Their numeric values are in
-<a href="#iana-close-codes" class="xref">Section 9.5</a>. Extensions to this mechanism MAY define new close codes
-and they SHOULD state how receivers react to them.<a href="#section-4.4.2.1-2" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-4.4.2.1-3">
-              <dt id="section-4.4.2.1-3.1">
-NO_ERROR:  </dt>
-              <dd style="margin-left: 1.5em" id="section-4.4.2.1-3.2">
-                <p id="section-4.4.2.1-3.2.1">This indicates that a context was closed without any action specified for the
-receiver.<a href="#section-4.4.2.1-3.2.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-4.4.2.1-3.3">
-UNKNOWN_FORMAT:  </dt>
-              <dd style="margin-left: 1.5em" id="section-4.4.2.1-3.4">
-                <p id="section-4.4.2.1-3.4.1">This indicates that the sender does not know how to interpret the datagram
-format type associated with this context. The endpoint that had originally
-registered this context MUST NOT try to register another context with the same
-datagram format type on this stream.<a href="#section-4.4.2.1-3.4.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-4.4.2.1-3.5">
-DENIED:  </dt>
-              <dd style="margin-left: 1.5em" id="section-4.4.2.1-3.6">
-                <p id="section-4.4.2.1-3.6.1">This indicates that the sender has rejected the context registration based on
-its local policy. The endpoint that had originally registered this context MUST
-NOT try to register another context with the same datagram format type and
-datagram format data on this stream.<a href="#section-4.4.2.1-3.6.1" class="pilcrow">¶</a></p>
-</dd>
-              <dd class="break"></dd>
-<dt id="section-4.4.2.1-3.7">
-RESOURCE_LIMIT:  </dt>
-              <dd style="margin-left: 1.5em" id="section-4.4.2.1-3.8">
-                <p id="section-4.4.2.1-3.8.1">This indicates that the context was closed to save resources. The recipient
-SHOULD limit its future registration of resource-intensive contexts.<a href="#section-4.4.2.1-3.8.1" class="pilcrow">¶</a></p>
-</dd>
-            <dd class="break"></dd>
-</dl>
-<p id="section-4.4.2.1-4">Receipt of an unknown close code MUST be treated as if the NO_ERROR code was
-present. Close codes are registered with IANA, see <a href="#iana-close-codes" class="xref">Section 9.5</a>.<a href="#section-4.4.2.1-4" class="pilcrow">¶</a></p>
-</section>
-</div>
+<p id="section-4.2-4">Endpoints indicate that the Capsule Protocol is in use on the data stream by
+sending the Capsule-Protocol header field with a value of ?1. A Capsule-Protocol
+header field with a value of ?0 has the same semantics as when the header is not
+present. Intermediaries MAY use this header field to allow processing of HTTP
+Datagrams for unknown HTTP methods or unknown HTTP Upgrade Tokens.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">The Capsule-Protocol header field MUST NOT be sent multiple times on a message.
+The Capsule-Protocol header field MUST NOT be used on HTTP responses with a
+status code different from 2xx (Successful). This specification does not define
+any parameters for the Capsule-Protocol header field value, but future documents
+MAY define parameters. Receivers MUST ignore unknown parameters.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="datagram-capsule">
-<section id="section-4.4.3">
-          <h4 id="name-the-datagram-capsules">
-<a href="#section-4.4.3" class="section-number selfRef">4.4.3. </a><a href="#name-the-datagram-capsules" class="section-name selfRef">The Datagram Capsules</a>
-          </h4>
-<p id="section-4.4.3-1">This document defines the DATAGRAM and DATAGRAM_WITH_CONTEXT capsules types,
-known collectively as the datagram capsules (see <a href="#iana-types" class="xref">Section 9.3</a> for the value
-of the capsule types). These capsules allow an endpoint to send a datagram
-frame over an HTTP stream. This is particularly useful when using a version of
-HTTP that does not support QUIC DATAGRAM frames.<a href="#section-4.4.3-1" class="pilcrow">¶</a></p>
+<section id="section-4.3">
+        <h3 id="name-the-datagram-capsule">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-the-datagram-capsule" class="section-name selfRef">The DATAGRAM Capsule</a>
+        </h3>
+<p id="section-4.3-1">This document defines the DATAGRAM capsule type (see <a href="#iana-types" class="xref">Section 8.3</a> for the
+value of the capsule type). This capsule allows an endpoint to send an HTTP
+Datagram on a stream using the Capsule Protocol. This is particularly useful
+when HTTP is running over a transport that does not support the QUIC DATAGRAM
+frame.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <span id="name-datagram-capsule-format"></span><div id="datagram-capsule-format">
-<figure id="figure-6">
-            <div class="alignLeft art-text artwork" id="section-4.4.3-2.1">
+<figure id="figure-4">
+          <div class="alignLeft art-text artwork" id="section-4.3-2.1">
 <pre>
 Datagram Capsule {
-  Type (i) = DATAGRAM or DATAGRAM_WITH_CONTEXT,
+  Type (i) = DATAGRAM,
   Length (i),
-  [Context ID (i)],
   HTTP Datagram Payload (..),
 }
 </pre>
 </div>
-<figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
+<figcaption><a href="#figure-4" class="selfRef">Figure 4</a>:
 <a href="#name-datagram-capsule-format" class="selfRef">DATAGRAM Capsule Format</a>
-            </figcaption></figure>
+          </figcaption></figure>
 </div>
-<span class="break"></span><dl class="dlParallel" id="section-4.4.3-3">
-            <dt id="section-4.4.3-3.1">
-Context ID:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.3-3.2">
-              <p id="section-4.4.3-3.2.1">A variable-length integer indicating the context ID of the datagram (see
-<a href="#datagram-contexts" class="xref">Section 2.1</a>). This field is present in DATAGRAM_WITH_CONTEXT capsules
-but not in DATAGRAM capsules. If a DATAGRAM capsule is used on a stream where
-datagram contexts are in use, it is associated with context ID 0.
-DATAGRAM_WITH_CONTEXT capsules MUST NOT carry context ID 0 as that context ID
-is conveyed using the DATAGRAM capsule.<a href="#section-4.4.3-3.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-4.3-3">
+          <dt id="section-4.3-3.1">HTTP Datagram Payload:</dt>
+          <dd style="margin-left: 1.5em" id="section-4.3-3.2">
+            <p id="section-4.3-3.2.1">The payload of the datagram, whose semantics are defined by individual
+applications. Note that this field can be empty.<a href="#section-4.3-3.2.1" class="pilcrow">¶</a></p>
 </dd>
-            <dd class="break"></dd>
-<dt id="section-4.4.3-3.3">
-HTTP Datagram Payload:  </dt>
-            <dd style="margin-left: 1.5em" id="section-4.4.3-3.4">
-              <p id="section-4.4.3-3.4.1">The payload of the datagram, whose semantics are defined by individual
-applications. Note that this field can be empty.<a href="#section-4.4.3-3.4.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
+        <dd class="break"></dd>
 </dl>
-<p id="section-4.4.3-4">Datagrams sent using the datagram capsule have the exact same semantics as
+<p id="section-4.3-4">Datagrams sent using the DATAGRAM capsule have the same semantics as
 datagrams sent in QUIC DATAGRAM frames. In particular, the restrictions on when
 it is allowed to send an HTTP Datagram and how to process them from <a href="#format" class="xref">Section 3</a>
-also apply to HTTP Datagrams sent and received using the datagram capsules.<a href="#section-4.4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-5">The datagram capsules are transparent to intermediaries, meaning that
-intermediaries MAY parse them and send datagram capsules that they did not
-receive. This allows an intermediary to reencode HTTP Datagrams as it forwards
-them: in other words, an intermediary MAY send a datagram capsule to forward an
-HTTP Datagram which was received in a QUIC DATAGRAM frame, and vice versa.<a href="#section-4.4.3-5" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-6">Note that while datagram capsules are sent on a stream, intermediaries can
-reencode HTTP Datagrams into QUIC DATAGRAM frames over the next hop, and those
-could be dropped. Because of this, applications have to always consider HTTP
-Datagrams to be unreliable, even if they were initially sent in a capsule.<a href="#section-4.4.3-6" class="pilcrow">¶</a></p>
-<p id="section-4.4.3-7">If an intermediary receives an HTTP Datagram in a QUIC DATAGRAM frame and is
+also apply to HTTP Datagrams sent and received using the DATAGRAM capsule.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.3-5">An intermediary can reencode HTTP Datagrams as it forwards them. In other words,
+an intermediary MAY send a DATAGRAM capsule to forward an HTTP Datagram which
+was received in a QUIC DATAGRAM frame, and vice versa.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.3-6">Note that while DATAGRAM capsules that are sent on a stream are reliably
+delivered in order, intermediaries can reencode DATAGRAM capsules into QUIC
+DATAGRAM frames when forwarding messages, which could result in loss or
+reordering.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
+<p id="section-4.3-7">If an intermediary receives an HTTP Datagram in a QUIC DATAGRAM frame and is
 forwarding it on a connection that supports QUIC DATAGRAM frames, the
 intermediary SHOULD NOT convert that HTTP Datagram to a DATAGRAM capsule. If
 the HTTP Datagram is too large to fit in a DATAGRAM frame (for example because
@@ -1959,12 +1519,10 @@ size advertised on that connection is too low), the intermediary SHOULD drop
 the HTTP Datagram instead of converting it to a DATAGRAM capsule. This
 preserves the end-to-end unreliability characteristic that methods such as
 Datagram Packetization Layer Path MTU Discovery (DPLPMTUD) depend on
-<span>[<a href="#RFC8899" class="xref">RFC8899</a>]</span>. An intermediary that converts QUIC DATAGRAM frames to datagram
+<span>[<a href="#RFC8899" class="xref">RFC8899</a>]</span>. An intermediary that converts QUIC DATAGRAM frames to DATAGRAM
 capsules allows HTTP Datagrams to be arbitrarily large without suffering any
-loss; this can misrepresent the true path properties, defeating methods such a
-DPLPMTUD.<a href="#section-4.4.3-7" class="pilcrow">¶</a></p>
-</section>
-</div>
+loss; this can misrepresent the true path properties, defeating methods such as
+DPLPMTUD.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2012,105 +1570,42 @@ endpoints negotiate the same draft version.<a href="#section-5.1-2" class="pilcr
 </div>
 </section>
 </div>
-<div id="context-hdr">
-<section id="section-6">
-      <h2 id="name-the-sec-use-datagram-contex">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-the-sec-use-datagram-contex" class="section-name selfRef">The Sec-Use-Datagram-Contexts HTTP Header</a>
-      </h2>
-<p id="section-6-1">Endpoints indicate their support for datagram contexts by sending the
-Sec-Use-Datagram-Contexts header with a value of ?1. If the header is missing
-or has a value different from ?1, that indicates that its sender does not wish
-to use datagram contexts. Endpoints that wish to use datagram contexts SHALL
-send the Sec-Use-Datagram-Contexts header with a value of ?1 on requests and
-responses that use the capsule protocol.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">"Sec-Use-Datagram-Contexts" is an Item Structured Header <span>[<a href="#RFC8941" class="xref">RFC8941</a>]</span>. Its
-value MUST be a Boolean, its ABNF is:<a href="#section-6-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6-3">
-<pre>
-Sec-Use-Datagram-Contexts = sf-boolean
-</pre><a href="#section-6-3" class="pilcrow">¶</a>
-</div>
-<p id="section-6-4">The REGISTER_DATAGRAM_CONTEXT, DATAGRAM_WITH_CONTEXT, and
-CLOSE_DATAGRAM_CONTEXT capsules as refered to as context-related capsules.
-Endpoints which do not wish to use contexts MUST NOT send context-related
-capsules, and MUST silently ignore any received context-related capsules.<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">Both endpoints unilaterally decide whether they wish to use datagram contexts
-on a given stream. Contexts are used on a given stream if and only if both
-endpoints indicate they wish to use them on this stream. Once an endpoint has
-received the HTTP request or response, it knows whether datagram contexts are
-in use on this stream or not.<a href="#section-6-5" class="pilcrow">¶</a></p>
-<p id="section-6-6">Conceptually, when datagram contexts are not in use on a stream, all datagrams
-use context ID 0, which is client-initiated. This means that the client chooses
-the datagram format for all datagrams when datagram contexts are not in use.<a href="#section-6-6" class="pilcrow">¶</a></p>
-<p id="section-6-7">If datagram contexts are not in use on a stream, endpoints MUST NOT send
-context-related capsules to the peer on that stream. Clients MAY optimistically
-send context-related capsules before learning whether the server wishes to
-support datagram contexts or not.<a href="#section-6-7" class="pilcrow">¶</a></p>
-<p id="section-6-8">This allows a client to optimistically use extensions that rely on datagram
-contexts without knowing a priori whether the server supports them, and without
-incurring a latency cost to negotiate extension support. In this scenario, the
-client would send its request with the Sec-Use-Datagram-Contexts header set to
-?1, and register two datagram contexts: the main context would use context ID 0
-and the extension context would use context ID 2. The client then sends a
-REGISTER_DATAGRAM capsule to register the main context, and a
-REGISTER_DATAGRAM_CONTEXT to register the extension context. The client can
-then immediately send DATAGRAM capsules to send main datagrams and
-DATAGRAM_WITH_CONTEXT capsules to send extension datagrams.<a href="#section-6-8" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-6-9.1">If the server wishes to use datagram contexts, it will set
-Sec-Use-Datagram-Contexts to ?1 on its response and correctly parse all the
-received capsules.<a href="#section-6-9.1" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-6-9.2">If the server does not wish to use datagram contexts (for example if the
-server implementation does not support them), it will not set
-Sec-Use-Datagram-Contexts to ?1 on its response. It will then parse the
-REGISTER_DATAGRAM and DATAGRAM capsules without datagram contexts being in
-use on this stream, and parse the main datagrams correctly while silently
-dropping the extension datagrams. Once the client receives the server's
-response, it will know datagram contexts are not in use, and then will be
-able to send HTTP Datagrams via the QUIC DATAGRAM frame.<a href="#section-6-9.2" class="pilcrow">¶</a>
-</li>
-      </ul>
-<p id="section-6-10">Extensions MAY define a different mechanism to communicate whether contexts are
-in use, and they MAY do so in a way which is opaque to intermediaries.<a href="#section-6-10" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="prioritization">
-<section id="section-7">
+<section id="section-6">
       <h2 id="name-prioritization">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-prioritization" class="section-name selfRef">Prioritization</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-prioritization" class="section-name selfRef">Prioritization</a>
       </h2>
-<p id="section-7-1">Data streams (see <a href="#capsule-protocol" class="xref">Section 4.1</a>) can be prioritized using any means
-suited to stream or request prioritization. For example, see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-priority-08#section-11" class="relref">Section 11</a> of [<a href="#PRIORITY" class="xref">PRIORITY</a>]</span>.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">Prioritization of HTTP/3 datagrams is not defined in this document. Future
+<p id="section-6-1">Data streams (see <a href="#capsule-protocol" class="xref">Section 4.1</a>) can be prioritized using any means
+suited to stream or request prioritization. For example, see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-priority-12#section-11" class="relref">Section 11</a> of [<a href="#PRIORITY" class="xref">PRIORITY</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Prioritization of HTTP/3 datagrams is not defined in this document. Future
 extensions MAY define how to prioritize datagrams, and MAY define signaling to
-allow endpoints to communicate their prioritization preferences.<a href="#section-7-2" class="pilcrow">¶</a></p>
+allow endpoints to communicate their prioritization preferences.<a href="#section-6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security">
-<section id="section-8">
+<section id="section-7">
       <h2 id="name-security-considerations">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-8-1">Since this feature requires sending an HTTP/3 Settings parameter, it "sticks
+<p id="section-7-1">Since this feature requires sending an HTTP/3 Settings parameter, it "sticks
 out". In other words, probing clients can learn whether a server supports this
 feature. Implementations that support this feature SHOULD always send this
 Settings parameter to avoid leaking the fact that there are applications using
-HTTP/3 datagrams enabled on this endpoint.<a href="#section-8-1" class="pilcrow">¶</a></p>
+HTTP/3 datagrams enabled on this endpoint.<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana">
-<section id="section-9">
+<section id="section-8">
       <h2 id="name-iana-considerations">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
 <div id="iana-setting">
-<section id="section-9.1">
+<section id="section-8.1">
         <h3 id="name-http-3-settings-parameter">
-<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-http-3-settings-parameter" class="section-name selfRef">HTTP/3 SETTINGS Parameter</a>
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-http-3-settings-parameter" class="section-name selfRef">HTTP/3 SETTINGS Parameter</a>
         </h3>
-<p id="section-9.1-1">This document will request IANA to register the following entry in the
-"HTTP/3 Settings" registry:<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+<p id="section-8.1-1">This document will request IANA to register the following entry in the
+"HTTP/3 Settings" registry:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 <span id="name-new-http-3-settings"></span><div id="iana-setting-table">
 <table class="center" id="table-1">
           <caption>
@@ -2138,79 +1633,71 @@ HTTP/3 datagrams enabled on this endpoint.<a href="#section-8-1" class="pilcrow"
 </section>
 </div>
 <div id="iana-hdr">
-<section id="section-9.2">
+<section id="section-8.2">
         <h3 id="name-http-header-field-name">
-<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-http-header-field-name" class="section-name selfRef">HTTP Header Field Name</a>
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-http-header-field-name" class="section-name selfRef">HTTP Header Field Name</a>
         </h3>
-<p id="section-9.2-1">This document will request IANA to register the following entry in the
-"HTTP Field Name" registry:<a href="#section-9.2-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-9.2-2">
-          <dt id="section-9.2-2.1">
-Field Name:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.2-2.2">
-            <p id="section-9.2-2.2.1">Sec-Use-Datagram-Contexts<a href="#section-9.2-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-8.2-1">This document will request IANA to register the following entry in the "HTTP
+Field Name" registry:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-8.2-2">
+          <dt id="section-8.2-2.1">Field Name:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.2">
+            <p id="section-8.2-2.2.1">Capsule-Protocol<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-9.2-2.3">
-Template:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.2-2.4">
-            <p id="section-9.2-2.4.1">None<a href="#section-9.2-2.4.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.3">Template:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.4">
+            <p id="section-8.2-2.4.1">None<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-9.2-2.5">
-Status:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.2-2.6">
-            <p id="section-9.2-2.6.1">provisional (permanent if this document is approved)<a href="#section-9.2-2.6.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.5">Status:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.6">
+            <p id="section-8.2-2.6.1">provisional (permanent if this document is approved)<a href="#section-8.2-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-9.2-2.7">
-Reference:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.2-2.8">
-            <p id="section-9.2-2.8.1">This document<a href="#section-9.2-2.8.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.7">Reference:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.8">
+            <p id="section-8.2-2.8.1">This document<a href="#section-8.2-2.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-9.2-2.9">
-Comments:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.2-2.10">
-            <p id="section-9.2-2.10.1">None<a href="#section-9.2-2.10.1" class="pilcrow">¶</a></p>
+<dt id="section-8.2-2.9">Comments:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.10">
+            <p id="section-8.2-2.10.1">None<a href="#section-8.2-2.10.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="iana-types">
-<section id="section-9.3">
-        <h3 id="name-capsule-types-2">
-<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-capsule-types-2" class="section-name selfRef">Capsule Types</a>
+<section id="section-8.3">
+        <h3 id="name-capsule-types">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-capsule-types" class="section-name selfRef">Capsule Types</a>
         </h3>
-<p id="section-9.3-1">This document establishes a registry for HTTP capsule type codes. The "HTTP
+<p id="section-8.3-1">This document establishes a registry for HTTP capsule type codes. The "HTTP
 Capsule Types" registry governs a 62-bit space. Registrations in this registry
-MUST include the following fields:<a href="#section-9.3-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-9.3-2">
-          <dt id="section-9.3-2.1">
-Type:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.3-2.2">
-            <p id="section-9.3-2.2.1">A name or label for the capsule type.<a href="#section-9.3-2.2.1" class="pilcrow">¶</a></p>
+MUST include the following fields:<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-8.3-2">
+          <dt id="section-8.3-2.1">Type:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.3-2.2">
+            <p id="section-8.3-2.2.1">A name or label for the capsule type.<a href="#section-8.3-2.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-9.3-2.3">
-Value:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.3-2.4">
-            <p id="section-9.3-2.4.1">The value of the Capsule Type field (see <a href="#capsule-protocol" class="xref">Section 4.1</a>) is a 62-bit
-integer.<a href="#section-9.3-2.4.1" class="pilcrow">¶</a></p>
+<dt id="section-8.3-2.3">Value:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.3-2.4">
+            <p id="section-8.3-2.4.1">The value of the Capsule Type field (see <a href="#capsule-protocol" class="xref">Section 4.1</a>) is a 62-bit
+integer.<a href="#section-8.3-2.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-9.3-2.5">
-Reference:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.3-2.6">
-            <p id="section-9.3-2.6.1">An optional reference to a specification for the type. This field MAY be
-empty.<a href="#section-9.3-2.6.1" class="pilcrow">¶</a></p>
+<dt id="section-8.3-2.5">Reference:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.3-2.6">
+            <p id="section-8.3-2.6.1">An optional reference to a specification for the type. This field MAY be
+empty.<a href="#section-8.3-2.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
-<p id="section-9.3-3">Registrations follow the "First Come First Served" policy (see Section 4.4 of
-<span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations MUST NOT have the same Type.<a href="#section-9.3-3" class="pilcrow">¶</a></p>
-<p id="section-9.3-4">This registry initially contains the following entries:<a href="#section-9.3-4" class="pilcrow">¶</a></p>
+<p id="section-8.3-3">Registrations follow the "First Come First Served" policy (see Section 4.4 of
+<span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations MUST NOT have the same Type.<a href="#section-8.3-3" class="pilcrow">¶</a></p>
+<p id="section-8.3-4">This registry initially contains the following entries:<a href="#section-8.3-4" class="pilcrow">¶</a></p>
 <span id="name-initial-capsule-types-regis"></span><div id="iana-types-table">
 <table class="center" id="table-2">
           <caption>
@@ -2226,171 +1713,34 @@ empty.<a href="#section-9.3-2.6.1" class="pilcrow">¶</a></p>
           </thead>
           <tbody>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">REGISTER_DATAGRAM_CONTEXT</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff37a1</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">REGISTER_DATAGRAM</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff37a2</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">CLOSE_DATAGRAM_CONTEXT</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff37a3</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">DATAGRAM_WITH_CONTEXT</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff37a4</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-            <tr>
               <td class="text-left" rowspan="1" colspan="1">DATAGRAM</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff37a5</td>
+              <td class="text-left" rowspan="1" colspan="1">0xff37a0</td>
               <td class="text-left" rowspan="1" colspan="1">This Document</td>
             </tr>
           </tbody>
         </table>
 </div>
-<p id="section-9.3-6">Capsule types with a value of the form 41 * N + 23 for integer values of N are
+<p id="section-8.3-6">Capsule types with a value of the form 41 * N + 23 for integer values of N are
 reserved to exercise the requirement that unknown capsule types be ignored.
 These capsules have no semantics and can carry arbitrary values. These values
 MUST NOT be assigned by IANA and MUST NOT appear in the listing of assigned
-values.<a href="#section-9.3-6" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="iana-format-types">
-<section id="section-9.4">
-        <h3 id="name-datagram-format-types">
-<a href="#section-9.4" class="section-number selfRef">9.4. </a><a href="#name-datagram-format-types" class="section-name selfRef">Datagram Format Types</a>
-        </h3>
-<p id="section-9.4-1">This document establishes a registry for HTTP datagram format type codes. The
-"HTTP Datagram Format Types" registry governs a 62-bit space. Registrations in
-this registry MUST include the following fields:<a href="#section-9.4-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-9.4-2">
-          <dt id="section-9.4-2.1">
-Type:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.4-2.2">
-            <p id="section-9.4-2.2.1">A name or label for the datagram format type.<a href="#section-9.4-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-9.4-2.3">
-Value:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.4-2.4">
-            <p id="section-9.4-2.4.1">The value of the Datagram Format Type field (see <a href="#datagram-formats" class="xref">Section 2.2</a>) is a
-62-bit integer.<a href="#section-9.4-2.4.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-9.4-2.5">
-Reference:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.4-2.6">
-            <p id="section-9.4-2.6.1">An optional reference to a specification for the parameter. This field MAY be
-empty.<a href="#section-9.4-2.6.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-</dl>
-<p id="section-9.4-3">Registrations follow the "First Come First Served" policy (see Section 4.4 of
-<span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations MUST NOT have the same Type
-nor Value.<a href="#section-9.4-3" class="pilcrow">¶</a></p>
-<p id="section-9.4-4">This registry is initially empty.<a href="#section-9.4-4" class="pilcrow">¶</a></p>
-<p id="section-9.4-5">Datagram format types with a value of the form 41 * N + 17 for integer values
-of N are reserved to exercise the requirement that unknown datagram format
-types be ignored. These format types have no semantics and can carry arbitrary
-values. These values MUST NOT be assigned by IANA and MUST NOT appear in the
-listing of assigned values.<a href="#section-9.4-5" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="iana-close-codes">
-<section id="section-9.5">
-        <h3 id="name-context-close-codes">
-<a href="#section-9.5" class="section-number selfRef">9.5. </a><a href="#name-context-close-codes" class="section-name selfRef">Context Close Codes</a>
-        </h3>
-<p id="section-9.5-1">This document establishes a registry for HTTP context close codes. The "HTTP
-Context Close Codes" registry governs a 62-bit space. Registrations in this
-registry MUST include the following fields:<a href="#section-9.5-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-9.5-2">
-          <dt id="section-9.5-2.1">
-Type:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.5-2.2">
-            <p id="section-9.5-2.2.1">A name or label for the close code.<a href="#section-9.5-2.2.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-9.5-2.3">
-Value:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.5-2.4">
-            <p id="section-9.5-2.4.1">The value of the Close Code field (see <a href="#close-capsule" class="xref">Section 4.4.2</a>) is a 62-bit integer.<a href="#section-9.5-2.4.1" class="pilcrow">¶</a></p>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-9.5-2.5">
-Reference:  </dt>
-          <dd style="margin-left: 1.5em" id="section-9.5-2.6">
-            <p id="section-9.5-2.6.1">An optional reference to a specification for the parameter. This field MAY be
-empty.<a href="#section-9.5-2.6.1" class="pilcrow">¶</a></p>
-</dd>
-        <dd class="break"></dd>
-</dl>
-<p id="section-9.5-3">Registrations follow the "First Come First Served" policy (see Section 4.4 of
-<span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations MUST NOT have the same Type
-nor Value.<a href="#section-9.5-3" class="pilcrow">¶</a></p>
-<p id="section-9.5-4">This registry initially contains the following entries:<a href="#section-9.5-4" class="pilcrow">¶</a></p>
-<span id="name-initial-context-close-code-"></span><div id="iana-close-codes-table">
-<table class="center" id="table-3">
-          <caption>
-<a href="#table-3" class="selfRef">Table 3</a>:
-<a href="#name-initial-context-close-code-" class="selfRef">Initial Context Close Code Registry Entries</a>
-          </caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">Context Close Code</th>
-              <th class="text-left" rowspan="1" colspan="1">Value</th>
-              <th class="text-left" rowspan="1" colspan="1">Specification</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">NO_ERROR</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff78a0</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">UNKNOWN_FORMAT</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff78a1</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">DENIED</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff78a2</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">RESOURCE_LIMIT</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff78a3</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-          </tbody>
-        </table>
-</div>
-<p id="section-9.5-6">Context close codes with a value of the form 41 * N + 19 for integer values of
-N are reserved to exercise the requirement that unknown context close codes be
-treated as NO_ERROR. These values MUST NOT be assigned by IANA and MUST NOT
-appear in the listing of assigned values.<a href="#section-9.5-6" class="pilcrow">¶</a></p>
+values.<a href="#section-8.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
-<section id="section-10">
+<section id="section-9">
       <h2 id="name-references">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
-<section id="section-10.1">
+<section id="section-9.1">
         <h3 id="name-normative-references">
-<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="DGRAM">[DGRAM]</dt>
         <dd>
-<span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Kinnear, E.</span>, and <span class="refAuthor">D. Schinazi</span>, <span class="refTitle">"An Unreliable Datagram Extension to QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-datagram-06</span>, <time datetime="2021-10-05" class="refDate">5 October 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-datagram-06">https://datatracker.ietf.org/doc/html/draft-ietf-quic-datagram-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Kinnear, E.</span>, and <span class="refAuthor">D. Schinazi</span>, <span class="refTitle">"An Unreliable Datagram Extension to QUIC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-quic-datagram-10</span>, <time datetime="2022-02-04" class="refDate">4 February 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-datagram-10">https://datatracker.ietf.org/doc/html/draft-ietf-quic-datagram-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="H3">[H3]</dt>
         <dd>
@@ -2418,14 +1768,14 @@ appear in the listing of assigned values.<a href="#section-9.5-6" class="pilcrow
 <dd class="break"></dd>
 </dl>
 </section>
-<section id="section-10.2">
+<section id="section-9.2">
         <h3 id="name-informative-references">
-<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="PRIORITY">[PRIORITY]</dt>
         <dd>
-<span class="refAuthor">Oku, K.</span> and <span class="refAuthor">L. Pardue</span>, <span class="refTitle">"Extensible Prioritization Scheme for HTTP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-priority-08</span>, <time datetime="2021-11-08" class="refDate">8 November 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-priority-08">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-priority-08</a>&gt;</span>. </dd>
+<span class="refAuthor">Oku, K.</span> and <span class="refAuthor">L. Pardue</span>, <span class="refTitle">"Extensible Prioritization Scheme for HTTP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-priority-12</span>, <time datetime="2022-01-17" class="refDate">17 January 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-priority-12">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-priority-12</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8899">[RFC8899]</dt>
       <dd>
@@ -2444,9 +1794,7 @@ appear in the listing of assigned values.<a href="#section-9.5-6" class="pilcrow
         <h3 id="name-connect-udp">
 <a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-connect-udp" class="section-name selfRef">CONNECT-UDP</a>
         </h3>
-<p id="appendix-A.1-1">In this example, the client does not support any CONNECT-UDP nor HTTP Datagram
-extensions, and therefore has no use for datagram contexts on this stream.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.1-2">
+<div class="alignLeft art-text artwork" id="appendix-A.1-1">
 <pre>
 Client                                             Server
 
@@ -2456,11 +1804,7 @@ STREAM(44): HEADERS             --------&gt;
   :scheme = https
   :path = /target.example.org/443/
   :authority = proxy.example.org:443
-
-STREAM(44): DATA                --------&gt;
-  Capsule Type = REGISTER_DATAGRAM
-  Datagram Format Type = UDP_PAYLOAD
-  Datagram Format Additional Data = ""
+  capsule-protocol = ?1
 
 DATAGRAM                        --------&gt;
   Quarter Stream ID = 11
@@ -2468,269 +1812,39 @@ DATAGRAM                        --------&gt;
 
            &lt;--------  STREAM(44): HEADERS
                         :status = 200
+                        capsule-protocol = ?1
 
 /* Wait for target server to respond to UDP packet. */
 
            &lt;--------  DATAGRAM
                         Quarter Stream ID = 11
                         Payload = Encapsulated UDP Payload
-</pre><a href="#appendix-A.1-2" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="connect-udp-with-timestamp-extension">
-<section id="appendix-A.2">
-        <h3 id="name-connect-udp-with-timestamp-">
-<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-connect-udp-with-timestamp-" class="section-name selfRef">CONNECT-UDP with Timestamp Extension</a>
-        </h3>
-<p id="appendix-A.2-1">In these examples, the client supports a CONNECT-UDP Timestamp Extension, which
-uses a different Datagram Format Type that carries a timestamp followed by the
-encapsulated UDP payload.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
-<div id="with-delay">
-<section id="appendix-A.2.1">
-          <h4 id="name-with-delay">
-<a href="#appendix-A.2.1" class="section-number selfRef">A.2.1. </a><a href="#name-with-delay" class="section-name selfRef">With Delay</a>
-          </h4>
-<p id="appendix-A.2.1-1">In this instance, the client prefers to wait a round trip to learn whether the
-server supports datagram contexts.<a href="#appendix-A.2.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2.1-2">
-<pre>
-Client                                             Server
-
-STREAM(44): HEADERS            --------&gt;
-  :method = CONNECT
-  :protocol = connect-udp
-  :scheme = https
-  :path = /target.example.org/443/
-  :authority = proxy.example.org:443
-  Sec-Use-Datagram-Contexts = ?1
-
-           &lt;--------  STREAM(44): HEADERS
-                        :status = 200
-                        Sec-Use-Datagram-Contexts = ?1
-
-STREAM(44): DATA               --------&gt;
-  Capsule Type = REGISTER_DATAGRAM_CONTEXT
-  Context ID = 0
-  Datagram Format Type = UDP_PAYLOAD
-  Datagram Format Additional Data = ""
-
-DATAGRAM                        --------&gt;
-  Quarter Stream ID = 11
-  Context ID = 0
-  Payload = Encapsulated UDP Payload
-
-           &lt;--------  DATAGRAM
-                        Quarter Stream ID = 11
-                        Context ID = 0
-                        Payload = Encapsulated UDP Payload
-
-STREAM(44): DATA               --------&gt;
-  Capsule Type = REGISTER_DATAGRAM_CONTEXT
-  Context ID = 2
-  Datagram Format Type = UDP_PAYLOAD_WITH_TIMESTAMP
-  Datagram Format Additional Data = ""
-
-DATAGRAM                       --------&gt;
-  Quarter Stream ID = 11
-  Context ID = 2
-  Payload = Encapsulated UDP Payload With Timestamp
-</pre><a href="#appendix-A.2.1-2" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="successful-optimistic">
-<section id="appendix-A.2.2">
-          <h4 id="name-successful-optimistic">
-<a href="#appendix-A.2.2" class="section-number selfRef">A.2.2. </a><a href="#name-successful-optimistic" class="section-name selfRef">Successful Optimistic</a>
-          </h4>
-<p id="appendix-A.2.2-1">In this instance, the client does not wish to spend a round trip waiting to
-learn whether the server supports datagram contexts. It registers its context
-optimistically in such a way that the server will react well whether it
-supports contexts or not. In this case, the server does support datagram
-contexts.<a href="#appendix-A.2.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2.2-2">
-<pre>
-Client                                             Server
-
-STREAM(44): HEADERS            --------&gt;
-  :method = CONNECT
-  :protocol = connect-udp
-  :scheme = https
-  :path = /target.example.org/443/
-  :authority = proxy.example.org:443
-  Sec-Use-Datagram-Contexts = ?1
-
-STREAM(44): DATA               --------&gt;
-  Capsule Type = REGISTER_DATAGRAM
-  Datagram Format Type = UDP_PAYLOAD
-  Datagram Format Additional Data = ""
-
-STREAM(44): DATA               --------&gt;
-  Capsule Type = DATAGRAM
-  Payload = Encapsulated UDP Payload
-
-           &lt;--------  STREAM(44): HEADERS
-                        :status = 200
-                        Sec-Use-Datagram-Contexts = ?1
-
-/* Datagram contexts are in use on this stream */
-
-           &lt;--------  DATAGRAM
-                        Quarter Stream ID = 11
-                        Context ID = 0
-                        Payload = Encapsulated UDP Payload
-
-STREAM(44): DATA               --------&gt;
-  Capsule Type = REGISTER_DATAGRAM_CONTEXT
-  Context ID = 2
-  Datagram Format Type = UDP_PAYLOAD_WITH_TIMESTAMP
-  Datagram Format Additional Data = ""
-
-DATAGRAM                       --------&gt;
-  Quarter Stream ID = 11
-  Context ID = 2
-  Payload = Encapsulated UDP Payload With Timestamp
-</pre><a href="#appendix-A.2.2-2" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-<div id="optimistic-but-unsupported">
-<section id="appendix-A.2.3">
-          <h4 id="name-optimistic-but-unsupported">
-<a href="#appendix-A.2.3" class="section-number selfRef">A.2.3. </a><a href="#name-optimistic-but-unsupported" class="section-name selfRef">Optimistic but Unsupported</a>
-          </h4>
-<p id="appendix-A.2.3-1">In this instance, the client does not wish to spend a round trip waiting to
-learn whether the server supports datagram contexts. It registers its context
-optimistically in such a way that the server will react well whether it
-supports contexts or not. In this case, the server does not support datagram
-contexts.<a href="#appendix-A.2.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="appendix-A.2.3-2">
-<pre>
-Client                                             Server
-
-STREAM(44): HEADERS            --------&gt;
-  :method = CONNECT
-  :protocol = connect-udp
-  :scheme = https
-  :path = /target.example.org/443/
-  :authority = proxy.example.org:443
-  Sec-Use-Datagram-Contexts = ?1
-
-STREAM(44): DATA               --------&gt;
-  Capsule Type = REGISTER_DATAGRAM
-  Datagram Format Type = UDP_PAYLOAD
-  Datagram Format Additional Data = ""
-
-STREAM(44): DATA               --------&gt;
-  Capsule Type = DATAGRAM
-  Payload = Encapsulated UDP Payload
-
-           &lt;--------  STREAM(44): HEADERS
-                        :status = 200
-
-/* Datagram contexts are not in use on this stream */
-
-           &lt;--------  DATAGRAM
-                        Quarter Stream ID = 11
-                        Payload = Encapsulated UDP Payload
-
-DATAGRAM                       --------&gt;
-  Quarter Stream ID = 11
-  Payload = Encapsulated UDP Payload
-</pre><a href="#appendix-A.2.3-2" class="pilcrow">¶</a>
-</div>
-</section>
-</div>
-</section>
-</div>
-<div id="connect-ip-with-ip-compression">
-<section id="appendix-A.3">
-        <h3 id="name-connect-ip-with-ip-compress">
-<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-connect-ip-with-ip-compress" class="section-name selfRef">CONNECT-IP with IP compression</a>
-        </h3>
-<div class="alignLeft art-text artwork" id="appendix-A.3-1">
-<pre>
-Client                                             Server
-
-STREAM(44): HEADERS            --------&gt;
-  :method = CONNECT
-  :protocol = connect-ip
-  :scheme = https
-  :path = /
-  :authority = proxy.example.org:443
-  Sec-Use-Datagram-Contexts = ?1
-
-           &lt;--------  STREAM(44): HEADERS
-                        :status = 200
-                        Sec-Use-Datagram-Contexts = ?1
-
-/* Exchange CONNECT-IP configuration information. */
-
-STREAM(44): DATA                --------&gt;
-  Capsule Type = REGISTER_DATAGRAM_CONTEXT
-  Context ID = 0
-  Datagram Format Type = IP_PACKET
-  Datagram Format Additional Data = ""
-
-DATAGRAM                       --------&gt;
-  Quarter Stream ID = 11
-  Context ID = 0
-  Payload = Encapsulated IP Packet
-
-/* Endpoint happily exchange encapsulated IP packets */
-/* using Quarter Stream ID 11 and Context ID 0.      */
-
-DATAGRAM                       --------&gt;
-  Quarter Stream ID = 11
-  Context ID = 0
-  Payload = Encapsulated IP Packet
-
-/* After performing some analysis on traffic patterns, */
-/* the client decides it wants to compress a 2-tuple.  */
-
-
-STREAM(44): DATA                --------&gt;
-  Capsule Type = REGISTER_DATAGRAM_CONTEXT
-  Context ID = 2
-  Datagram Format Type = COMPRESSED_IP_PACKET
-  Datagram Format Additional Data = "192.0.2.6,192.0.2.7"
-
-DATAGRAM                       --------&gt;
-  Quarter Stream ID = 11
-  Context ID = 2
-  Payload = Compressed IP Packet
-</pre><a href="#appendix-A.3-1" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="webtransport">
-<section id="appendix-A.4">
+<section id="appendix-A.2">
         <h3 id="name-webtransport">
-<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-webtransport" class="section-name selfRef">WebTransport</a>
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-webtransport" class="section-name selfRef">WebTransport</a>
         </h3>
-<div class="alignLeft art-text artwork" id="appendix-A.4-1">
+<div class="alignLeft art-text artwork" id="appendix-A.2-1">
 <pre>
 Client                                             Server
 
 STREAM(44): HEADERS            --------&gt;
   :method = CONNECT
   :scheme = https
-  :method = webtransport
+  :protocol = webtransport
   :path = /hello
   :authority = webtransport.example.org:443
-  Origin = https://www.example.org:443
-
-STREAM(44): DATA                --------&gt;
-  Capsule Type = REGISTER_DATAGRAM
-  Datagram Format Type = WEBTRANSPORT_DATAGRAM
-  Datagram Format Additional Data = ""
+  origin = https://www.example.org:443
 
            &lt;--------  STREAM(44): HEADERS
                         :status = 200
 
 /* Both endpoints can now send WebTransport datagrams. */
-</pre><a href="#appendix-A.4-1" class="pilcrow">¶</a>
+</pre><a href="#appendix-A.2-1" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
