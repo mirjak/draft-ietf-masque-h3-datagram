@@ -361,6 +361,14 @@ Table of Contents
    large without suffering any loss; this can misrepresent the true path
    properties, defeating methods such as DPLPMTUD.
 
+   While DATAGRAM capsules can theoretically carry a payload of length
+   2^62-1, most applications will have their own limits on what datagran
+   payload sizes are practical.  Implementations SHOULD take those
+   limits into account when parsing DATAGRAM capsules: if an incoming
+   DATAGRAM capsule has a length that is known to be so large as to not
+   be usable, the implementation SHOULD discard the capsule without
+   buffering its contents into memory.
+
 5.  The H3_DATAGRAM HTTP/3 SETTINGS Parameter
 
    Implementations of HTTP/3 that support HTTP Datagrams can indicate

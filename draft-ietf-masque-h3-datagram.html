@@ -1531,6 +1531,12 @@ Datagram Packetization Layer Path MTU Discovery (DPLPMTUD) depend on
 capsules allows HTTP Datagrams to be arbitrarily large without suffering any
 loss; this can misrepresent the true path properties, defeating methods such as
 DPLPMTUD.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
+<p id="section-4.3-8">While DATAGRAM capsules can theoretically carry a payload of length
+2<sup>62</sup>-1, most applications will have their own limits on what datagran
+payload sizes are practical. Implementations SHOULD take those limits into
+account when parsing DATAGRAM capsules: if an incoming DATAGRAM capsule has a
+length that is known to be so large as to not be usable, the implementation
+SHOULD discard the capsule without buffering its contents into memory.<a href="#section-4.3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
