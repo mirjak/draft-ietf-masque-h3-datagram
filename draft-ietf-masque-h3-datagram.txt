@@ -72,23 +72,23 @@ Table of Contents
      1.1.  Conventions and Definitions
    2.  Multiplexing
    3.  HTTP/3 Datagram Format
+     3.1.  The H3_DATAGRAM HTTP/3 SETTINGS Parameter
+       3.1.1.  Note About Draft Versions
    4.  Capsules
      4.1.  Capsule Protocol
      4.2.  Error Handling
      4.3.  The Capsule-Protocol Header
      4.4.  The DATAGRAM Capsule
-   5.  The H3_DATAGRAM HTTP/3 SETTINGS Parameter
-     5.1.  Note About Draft Versions
-   6.  Prioritization
-   7.  Security Considerations
-   8.  IANA Considerations
-     8.1.  HTTP/3 SETTINGS Parameter
-     8.2.  HTTP/3 Error Code
-     8.3.  HTTP Header Field Name
-     8.4.  Capsule Types
-   9.  References
-     9.1.  Normative References
-     9.2.  Informative References
+   5.  Prioritization
+   6.  Security Considerations
+   7.  IANA Considerations
+     7.1.  HTTP/3 SETTINGS Parameter
+     7.2.  HTTP/3 Error Code
+     7.3.  HTTP Header Field Name
+     7.4.  Capsule Types
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Appendix A.  Examples
      A.1.  CONNECT-UDP
      A.2.  WebTransport
@@ -114,8 +114,9 @@ Table of Contents
       versions.
 
    *  Section 3 defines how QUIC DATAGRAM frames are used with HTTP/3.
-      Section 5 defines an HTTP/3 setting that endpoints can use to
-      advertise support of the frame.
+
+      -  Section 3.1 defines an HTTP/3 setting that endpoints can use to
+         advertise support of the frame.
 
    *  Section 4 introduces the Capsule Protocol and the "data stream"
       concept.  Data streams are initiated using special-purpose HTTP
@@ -208,6 +209,53 @@ Table of Contents
    H3_DATAGRAM_ERROR.  Future extensions MAY remove these requirements
    if they define semantics for such HTTP Datagrams and negotiate mutual
    support.
+
+3.1.  The H3_DATAGRAM HTTP/3 SETTINGS Parameter
+
+   Implementations of HTTP/3 that support HTTP Datagrams can indicate
+   that to their peer by sending the H3_DATAGRAM SETTINGS parameter with
+   a value of 1.  The value of the H3_DATAGRAM SETTINGS parameter MUST
+   be either 0 or 1.  A value of 0 indicates that HTTP Datagrams are not
+   supported.  An endpoint that receives the H3_DATAGRAM SETTINGS
+   parameter with a value that is neither 0 or 1 MUST terminate the
+   connection with error H3_SETTINGS_ERROR.
+
+   Endpoints MUST NOT send QUIC DATAGRAM frames until they have both
+   sent and received the H3_DATAGRAM SETTINGS parameter with a value of
+   1.
+
+   When clients use 0-RTT, they MAY store the value of the server's
+   H3_DATAGRAM SETTINGS parameter.  Doing so allows the client to send
+   QUIC DATAGRAM frames in 0-RTT packets.  When servers decide to accept
+   0-RTT data, they MUST send a H3_DATAGRAM SETTINGS parameter greater
+   than or equal to the value they sent to the client in the connection
+   where they sent them the NewSessionTicket message.  If a client
+   stores the value of the H3_DATAGRAM SETTINGS parameter with their
+   0-RTT state, they MUST validate that the new value of the H3_DATAGRAM
+   SETTINGS parameter sent by the server in the handshake is greater
+   than or equal to the stored value; if not, the client MUST terminate
+   the connection with error H3_SETTINGS_ERROR.  In all cases, the
+   maximum permitted value of the H3_DATAGRAM SETTINGS parameter is 1.
+
+   It is RECOMMENDED that implementations that support receiving HTTP
+   Datagrams using QUIC always send the H3_DATAGRAM SETTINGS parameter
+   with a value of 1, even if the application does not intend to use
+   HTTP Datagrams.  This helps to avoid "sticking out"; see Section 6.
+
+3.1.1.  Note About Draft Versions
+
+   [[RFC editor: please remove this section before publication.]]
+
+   Some revisions of this draft specification use a different value (the
+   Identifier field of a Setting in the HTTP/3 SETTINGS frame) for the
+   H3_DATAGRAM Settings Parameter.  This allows new draft revisions to
+   make incompatible changes.  Multiple draft versions MAY be supported
+   by either endpoint in a connection.  Such endpoints MUST send
+   multiple values for H3_DATAGRAM.  Once an endpoint has sent and
+   received SETTINGS, it MUST compute the intersection of the values it
+   has sent and received, and then it MUST select and use the most
+   recent draft version from the intersection set.  This ensures that
+   both endpoints negotiate the same draft version.
 
 4.  Capsules
 
@@ -345,7 +393,7 @@ Table of Contents
 
 4.4.  The DATAGRAM Capsule
 
-   This document defines the DATAGRAM capsule type (see Section 8.4 for
+   This document defines the DATAGRAM capsule type (see Section 7.4 for
    the value of the capsule type).  This capsule allows an endpoint to
    send an HTTP Datagram on a stream using the Capsule Protocol.  This
    is particularly useful when HTTP is running over a transport that
@@ -402,54 +450,7 @@ Table of Contents
    be usable, the implementation SHOULD discard the capsule without
    buffering its contents into memory.
 
-5.  The H3_DATAGRAM HTTP/3 SETTINGS Parameter
-
-   Implementations of HTTP/3 that support HTTP Datagrams can indicate
-   that to their peer by sending the H3_DATAGRAM SETTINGS parameter with
-   a value of 1.  The value of the H3_DATAGRAM SETTINGS parameter MUST
-   be either 0 or 1.  A value of 0 indicates that HTTP Datagrams are not
-   supported.  An endpoint that receives the H3_DATAGRAM SETTINGS
-   parameter with a value that is neither 0 or 1 MUST terminate the
-   connection with error H3_SETTINGS_ERROR.
-
-   Endpoints MUST NOT send QUIC DATAGRAM frames until they have both
-   sent and received the H3_DATAGRAM SETTINGS parameter with a value of
-   1.
-
-   When clients use 0-RTT, they MAY store the value of the server's
-   H3_DATAGRAM SETTINGS parameter.  Doing so allows the client to send
-   QUIC DATAGRAM frames in 0-RTT packets.  When servers decide to accept
-   0-RTT data, they MUST send a H3_DATAGRAM SETTINGS parameter greater
-   than or equal to the value they sent to the client in the connection
-   where they sent them the NewSessionTicket message.  If a client
-   stores the value of the H3_DATAGRAM SETTINGS parameter with their
-   0-RTT state, they MUST validate that the new value of the H3_DATAGRAM
-   SETTINGS parameter sent by the server in the handshake is greater
-   than or equal to the stored value; if not, the client MUST terminate
-   the connection with error H3_SETTINGS_ERROR.  In all cases, the
-   maximum permitted value of the H3_DATAGRAM SETTINGS parameter is 1.
-
-   It is RECOMMENDED that implementations that support receiving HTTP
-   Datagrams using QUIC always send the H3_DATAGRAM SETTINGS parameter
-   with a value of 1, even if the application does not intend to use
-   HTTP Datagrams.  This helps to avoid "sticking out"; see Section 7.
-
-5.1.  Note About Draft Versions
-
-   [[RFC editor: please remove this section before publication.]]
-
-   Some revisions of this draft specification use a different value (the
-   Identifier field of a Setting in the HTTP/3 SETTINGS frame) for the
-   H3_DATAGRAM Settings Parameter.  This allows new draft revisions to
-   make incompatible changes.  Multiple draft versions MAY be supported
-   by either endpoint in a connection.  Such endpoints MUST send
-   multiple values for H3_DATAGRAM.  Once an endpoint has sent and
-   received SETTINGS, it MUST compute the intersection of the values it
-   has sent and received, and then it MUST select and use the most
-   recent draft version from the intersection set.  This ensures that
-   both endpoints negotiate the same draft version.
-
-6.  Prioritization
+5.  Prioritization
 
    Data streams (see Section 4.1) can be prioritized using any means
    suited to stream or request prioritization.  For example, see
@@ -460,7 +461,7 @@ Table of Contents
    define signaling to allow endpoints to communicate their
    prioritization preferences.
 
-7.  Security Considerations
+6.  Security Considerations
 
    Since transmitting HTTP Datagrams using QUIC DATAGRAM frames requires
    sending an HTTP/3 Settings parameter, it "sticks out".  In other
@@ -468,15 +469,15 @@ Table of Contents
    Datagrams over QUIC DATAGRAM frames.  As some servers might wish to
    obfuscate the fact that they offer application services that use HTTP
    datagrams, it's best for all implementations that support this
-   feature to always send this Settings parameter, see Section 5.
+   feature to always send this Settings parameter, see Section 3.1.
 
    Since use of the Capsule Protocol is restricted to new HTTP Upgrade
    Tokens, it is not accessible from Web Platform APIs (such as those
    commonly accessed via JavaScript in web browsers).
 
-8.  IANA Considerations
+7.  IANA Considerations
 
-8.1.  HTTP/3 SETTINGS Parameter
+7.1.  HTTP/3 SETTINGS Parameter
 
    This document will request IANA to register the following entry in
    the "HTTP/3 Settings" registry:
@@ -496,7 +497,7 @@ Table of Contents
 
    Contact:  HTTP_WG; HTTP working group; ietf-http-wg@w3.org
 
-8.2.  HTTP/3 Error Code
+7.2.  HTTP/3 Error Code
 
    This document will request IANA to register the following entry in
    the "HTTP/3 Error Codes" registry:
@@ -516,7 +517,7 @@ Table of Contents
 
    Contact:  HTTP_WG; HTTP working group; ietf-http-wg@w3.org
 
-8.3.  HTTP Header Field Name
+7.3.  HTTP Header Field Name
 
    This document will request IANA to register the following entry in
    the "HTTP Field Name" registry:
@@ -531,7 +532,7 @@ Table of Contents
 
    Comments:  None
 
-8.4.  Capsule Types
+7.4.  Capsule Types
 
    This document establishes a registry for HTTP capsule type codes.
    The "HTTP Capsule Types" registry governs a 62-bit space.
@@ -566,9 +567,9 @@ Table of Contents
    arbitrary values.  These values MUST NOT be assigned by IANA and MUST
    NOT appear in the listing of assigned values.
 
-9.  References
+8.  References
 
-9.1.  Normative References
+8.1.  Normative References
 
    [CORE-MESSAGING]
               Fielding, R. T., Nottingham, M., and J. Reschke,
@@ -618,7 +619,7 @@ Table of Contents
               HTTP", RFC 8941, DOI 10.17487/RFC8941, February 2021,
               <https://www.rfc-editor.org/rfc/rfc8941>.
 
-9.2.  Informative References
+8.2.  Informative References
 
    [PRIORITY] Oku, K. and L. Pardue, "Extensible Prioritization Scheme
               for HTTP", Work in Progress, Internet-Draft, draft-ietf-
