@@ -422,13 +422,20 @@ Table of Contents
    This document will request IANA to register the following entry in
    the "HTTP/3 Settings" registry:
 
-           +==============+==========+===============+=========+
-           | Setting Name | Value    | Specification | Default |
-           +==============+==========+===============+=========+
-           | H3_DATAGRAM  | 0xffd277 | This Document | 0       |
-           +--------------+----------+---------------+---------+
+   Value:  0xffd277 (note that this will switch to a lower value before
+      publication)
 
-                        Table 1: New HTTP/3 Settings
+   Setting Name:  H3_DATAGRAM
+
+   Default:  0
+
+   Status:  provisional (permanent if this document is approved)
+
+   Specification:  This Document
+
+   Change Controller:  IETF
+
+   Contact:  HTTP_WG; HTTP working group; ietf-http-wg@w3.org
 
 8.2.  HTTP Header Field Name
 
@@ -471,7 +478,7 @@ Table of Contents
                 | DATAGRAM     | 0xff37a0 | This Document |
                 +--------------+----------+---------------+
 
-                  Table 2: Initial Capsule Types Registry
+                  Table 1: Initial Capsule Types Registry
                                   Entries
 
    Capsule types with a value of the form 41 * N + 23 for integer values
