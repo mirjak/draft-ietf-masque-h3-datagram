@@ -1334,14 +1334,20 @@ received associated datagrams.<a href="#section-3-5" class="pilcrow">¶</a></p>
 that has not yet been created, the receiver SHALL either drop that datagram
 silently or buffer it temporarily while awaiting the creation of the
 corresponding stream.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">HTTP/3 datagrams MUST only be sent with an association to a stream that supports
+<p id="section-3-7">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
+that cannot be created due to client-initiated bidirectional stream limits, it
+SHOULD be treated as a connection error of type H3_ID_ERROR. Generating an error
+is not mandatory in this case because HTTP/3 implementations might have
+practical barriers to determining the active stream concurrency limit that is
+applied by the QUIC layer.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<p id="section-3-8">HTTP/3 datagrams MUST only be sent with an association to a stream that supports
 semantics for HTTP Datagrams. For example, existing HTTP methods GET and POST do
 not define semantics for associated HTTP Datagrams; therefore, HTTP/3 datagrams
 cannot be sent associated with GET or POST request streams. If an endpoint
 receives an HTTP/3 datagram associated with a method that has no known semantics
 for HTTP Datagrams, it MUST abort the corresponding stream with
 H3_GENERAL_PROTOCOL_ERROR. Future extensions MAY remove these requirements if
-they define semantics for such HTTP Datagrams and negotiate mutual support.<a href="#section-3-7" class="pilcrow">¶</a></p>
+they define semantics for such HTTP Datagrams and negotiate mutual support.<a href="#section-3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="capsule">
