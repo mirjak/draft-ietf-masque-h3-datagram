@@ -366,8 +366,8 @@ Table of Contents
 4.3.  The Capsule-Protocol Header Field
 
    This document defines the "Capsule-Protocol" header field.  It is an
-   Item Structured Header [RFC8941]; its value MUST be a Boolean.  Its
-   ABNF is:
+   Item Structured Field, see Section 3.3 of [STRUCT-FIELD]; its value
+   MUST be a Boolean.  Its ABNF is:
 
    Capsule-Protocol = sf-item
 
@@ -436,7 +436,7 @@ Table of Contents
    Datagram instead of converting it to a DATAGRAM capsule.  This
    preserves the end-to-end unreliability characteristic that methods
    such as Datagram Packetization Layer Path MTU Discovery (DPLPMTUD)
-   depend on [RFC8899].  An intermediary that converts QUIC DATAGRAM
+   depend on [DPLPMTUD].  An intermediary that converts QUIC DATAGRAM
    frames to DATAGRAM capsules allows HTTP Datagrams to be arbitrarily
    large without suffering any loss; this can misrepresent the true path
    properties, defeating methods such as DPLPMTUD.
@@ -593,6 +593,12 @@ Table of Contents
               <https://datatracker.ietf.org/doc/html/draft-ietf-quic-
               http-34>.
 
+   [HTTP]     Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
+              Semantics", Work in Progress, Internet-Draft, draft-ietf-
+              httpbis-semantics-19, 12 September 2021,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
+              semantics-19>.
+
    [IANA-POLICY]
               Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
@@ -613,28 +619,23 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [RFC8941]  Nottingham, M. and P-H. Kamp, "Structured Field Values for
+   [STRUCT-FIELD]
+              Nottingham, M. and P-H. Kamp, "Structured Field Values for
               HTTP", RFC 8941, DOI 10.17487/RFC8941, February 2021,
               <https://www.rfc-editor.org/rfc/rfc8941>.
 
 8.2.  Informative References
 
-   [HTTP]     Fielding, R. T., Nottingham, M., and J. Reschke, "HTTP
-              Semantics", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-semantics-19, 12 September 2021,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
-              semantics-19>.
+   [DPLPMTUD] Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T.
+              Völker, "Packetization Layer Path MTU Discovery for
+              Datagram Transports", RFC 8899, DOI 10.17487/RFC8899,
+              September 2020, <https://www.rfc-editor.org/rfc/rfc8899>.
 
    [PRIORITY] Oku, K. and L. Pardue, "Extensible Prioritization Scheme
               for HTTP", Work in Progress, Internet-Draft, draft-ietf-
               httpbis-priority-12, 17 January 2022,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
               priority-12>.
-
-   [RFC8899]  Fairhurst, G., Jones, T., Tüxen, M., Rüngeler, I., and T.
-              Völker, "Packetization Layer Path MTU Discovery for
-              Datagram Transports", RFC 8899, DOI 10.17487/RFC8899,
-              September 2020, <https://www.rfc-editor.org/rfc/rfc8899>.
 
 Appendix A.  Examples
 
