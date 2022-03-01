@@ -1268,10 +1268,10 @@ for specifying new capsule types.<a href="#section-1-3.3.2.1" class="pilcrow">¶
         <h3 id="name-conventions-and-definitions">
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
         </h3>
-<p id="section-1.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span>
-when, and only when, they appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1322,7 +1322,7 @@ division by four stems from the fact that HTTP requests are sent on
 client-initiated bidirectional streams, and those have stream IDs that are
 divisible by four). The largest legal QUIC stream ID value is 2<sup>62</sup>-1,
 so the largest legal value of Quarter Stream ID is 2<sup>60</sup>-1. Receipt of
-a frame that includes a larger value MUST be treated as an HTTP/3 connection
+a frame that includes a larger value <span class="bcp14">MUST</span> be treated as an HTTP/3 connection
 error of type H3_DATAGRAM_ERROR.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
@@ -1334,31 +1334,31 @@ applications. Note that this field can be empty.<a href="#section-3-3.4.1" class
       <dd class="break"></dd>
 </dl>
 <p id="section-3-4">Receipt of a QUIC DATAGRAM frame whose payload is too short to allow parsing the
-Quarter Stream ID field MUST be treated as an HTTP/3 connection error of type
+Quarter Stream ID field <span class="bcp14">MUST</span> be treated as an HTTP/3 connection error of type
 H3_DATAGRAM_ERROR.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">Endpoints MUST NOT send HTTP/3 datagrams unless the corresponding stream's send
+<p id="section-3-5">Endpoints <span class="bcp14">MUST NOT</span> send HTTP/3 datagrams unless the corresponding stream's send
 side is open. On a given endpoint, once the receive side of a stream is closed,
 incoming datagrams for this stream are no longer expected so the endpoint can
-release related state. Endpoints MAY keep state for a short time to account for
-reordering. Once the state is released, the endpoint MUST silently drop
+release related state. Endpoints <span class="bcp14">MAY</span> keep state for a short time to account for
+reordering. Once the state is released, the endpoint <span class="bcp14">MUST</span> silently drop
 received associated datagrams.<a href="#section-3-5" class="pilcrow">¶</a></p>
 <p id="section-3-6">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
-that has not yet been created, the receiver SHALL either drop that datagram
+that has not yet been created, the receiver <span class="bcp14">SHALL</span> either drop that datagram
 silently or buffer it temporarily while awaiting the creation of the
 corresponding stream.<a href="#section-3-6" class="pilcrow">¶</a></p>
 <p id="section-3-7">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
 that cannot be created due to client-initiated bidirectional stream limits, it
-SHOULD be treated as an HTTP/3 connection error of type H3_ID_ERROR. Generating
+<span class="bcp14">SHOULD</span> be treated as an HTTP/3 connection error of type H3_ID_ERROR. Generating
 an error is not mandatory in this case because HTTP/3 implementations might have
 practical barriers to determining the active stream concurrency limit that is
 applied by the QUIC layer.<a href="#section-3-7" class="pilcrow">¶</a></p>
-<p id="section-3-8">HTTP/3 datagrams MUST only be sent with an association to a stream that supports
+<p id="section-3-8">HTTP/3 datagrams <span class="bcp14">MUST</span> only be sent with an association to a stream that supports
 semantics for HTTP Datagrams. For example, existing HTTP methods GET and POST do
 not define semantics for associated HTTP Datagrams; therefore, HTTP/3 datagrams
 cannot be sent associated with GET or POST request streams. If an endpoint
 receives an HTTP/3 datagram associated with a method that has no known semantics
-for HTTP Datagrams, it MUST abort the corresponding stream with
-H3_DATAGRAM_ERROR. Future extensions MAY remove these requirements if they
+for HTTP Datagrams, it <span class="bcp14">MUST</span> abort the corresponding stream with
+H3_DATAGRAM_ERROR. Future extensions <span class="bcp14">MAY</span> remove these requirements if they
 define semantics for such HTTP Datagrams and negotiate mutual support.<a href="#section-3-8" class="pilcrow">¶</a></p>
 <div id="setting">
 <section id="section-3.1">
@@ -1367,24 +1367,24 @@ define semantics for such HTTP Datagrams and negotiate mutual support.<a href="#
         </h3>
 <p id="section-3.1-1">Implementations of HTTP/3 that support HTTP Datagrams can indicate that to
 their peer by sending the H3_DATAGRAM SETTINGS parameter with a value of 1.
-The value of the H3_DATAGRAM SETTINGS parameter MUST be either 0 or 1. A value
+The value of the H3_DATAGRAM SETTINGS parameter <span class="bcp14">MUST</span> be either 0 or 1. A value
 of 0 indicates that HTTP Datagrams are not supported. An endpoint that receives
-the H3_DATAGRAM SETTINGS parameter with a value that is neither 0 or 1 MUST
+the H3_DATAGRAM SETTINGS parameter with a value that is neither 0 or 1 <span class="bcp14">MUST</span>
 terminate the connection with error H3_SETTINGS_ERROR.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">Endpoints MUST NOT send QUIC DATAGRAM frames until they have both sent and
+<p id="section-3.1-2">Endpoints <span class="bcp14">MUST NOT</span> send QUIC DATAGRAM frames until they have both sent and
 received the H3_DATAGRAM SETTINGS parameter with a value of 1.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">When clients use 0-RTT, they MAY store the value of the server's H3_DATAGRAM
+<p id="section-3.1-3">When clients use 0-RTT, they <span class="bcp14">MAY</span> store the value of the server's H3_DATAGRAM
 SETTINGS parameter. Doing so allows the client to send QUIC DATAGRAM frames in
-0-RTT packets. When servers decide to accept 0-RTT data, they MUST send a
+0-RTT packets. When servers decide to accept 0-RTT data, they <span class="bcp14">MUST</span> send a
 H3_DATAGRAM SETTINGS parameter greater than or equal to the value they sent to
 the client in the connection where they sent them the NewSessionTicket message.
 If a client stores the value of the H3_DATAGRAM SETTINGS parameter with their
-0-RTT state, they MUST validate that the new value of the H3_DATAGRAM SETTINGS
+0-RTT state, they <span class="bcp14">MUST</span> validate that the new value of the H3_DATAGRAM SETTINGS
 parameter sent by the server in the handshake is greater than or equal to the
-stored value; if not, the client MUST terminate the connection with error
+stored value; if not, the client <span class="bcp14">MUST</span> terminate the connection with error
 H3_SETTINGS_ERROR. In all cases, the maximum permitted value of the H3_DATAGRAM
 SETTINGS parameter is 1.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1-4">It is RECOMMENDED that implementations that support receiving HTTP Datagrams
+<p id="section-3.1-4">It is <span class="bcp14">RECOMMENDED</span> that implementations that support receiving HTTP Datagrams
 using QUIC always send the H3_DATAGRAM SETTINGS parameter with a value of 1,
 even if the application does not intend to use HTTP Datagrams. This helps to
 avoid "sticking out"; see <a href="#security" class="xref">Section 6</a>.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
@@ -1397,10 +1397,10 @@ avoid "sticking out"; see <a href="#security" class="xref">Section 6</a>.<a href
 <p id="section-3.1.1-2">Some revisions of this draft specification use a different value (the
 Identifier field of a Setting in the HTTP/3 SETTINGS frame) for the H3_DATAGRAM
 Settings Parameter. This allows new draft revisions to make incompatible
-changes. Multiple draft versions MAY be supported by either endpoint in a
-connection. Such endpoints MUST send multiple values for H3_DATAGRAM. Once an
-endpoint has sent and received SETTINGS, it MUST compute the intersection of
-the values it has sent and received, and then it MUST select and use the most
+changes. Multiple draft versions <span class="bcp14">MAY</span> be supported by either endpoint in a
+connection. Such endpoints <span class="bcp14">MUST</span> send multiple values for H3_DATAGRAM. Once an
+endpoint has sent and received SETTINGS, it <span class="bcp14">MUST</span> compute the intersection of
+the values it has sent and received, and then it <span class="bcp14">MUST</span> select and use the most
 recent draft version from the intersection set. This ensures that both
 endpoints negotiate the same draft version.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 </section>
@@ -1435,7 +1435,7 @@ a new HTTP Upgrade Token is only defined over transports that support QUIC
 DATAGRAM frames, they might not need a stream encoding. Additionally,
 definitions of new HTTP Upgrade Tokens can use HTTP Datagrams with their own
 data stream protocol. However, new HTTP Upgrade Tokens that wish to use HTTP
-Datagrams SHOULD use the Capsule Protocol unless they have a good reason not to.<a href="#section-4-3" class="pilcrow">¶</a></p>
+Datagrams <span class="bcp14">SHOULD</span> use the Capsule Protocol unless they have a good reason not to.<a href="#section-4-3" class="pilcrow">¶</a></p>
 <div id="capsule-protocol">
 <section id="section-4.1">
         <h3 id="name-capsule-protocol">
@@ -1477,7 +1477,7 @@ Capsule {
           <dt id="section-4.1-4.1">Capsule Type:</dt>
           <dd style="margin-left: 1.5em" id="section-4.1-4.2">
             <p id="section-4.1-4.2.1">A variable-length integer indicating the Type of the capsule. Endpoints that
-receive a capsule with an unknown Capsule Type MUST silently skip over that
+receive a capsule with an unknown Capsule Type <span class="bcp14">MUST</span> silently skip over that
 capsule.<a href="#section-4.1-4.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
@@ -1495,21 +1495,21 @@ Capsule Type field.<a href="#section-4.1-4.6.1" class="pilcrow">¶</a></p>
         <dd class="break"></dd>
 </dl>
 <p id="section-4.1-5">Because new protocols or extensions may involve defining new capsule types,
-intermediaries that wish to allow for future extensibility SHOULD forward
+intermediaries that wish to allow for future extensibility <span class="bcp14">SHOULD</span> forward
 capsules unmodified. One exception to this rule is the DATAGRAM capsule; see
 <a href="#datagram-capsule" class="xref">Section 4.4</a>. An intermediary can identify the use of the capsule
 protocol either through the presence of the Capsule-Protocol header field
 (<a href="#hdr" class="xref">Section 4.3</a>) or by understanding the chosen HTTP Upgrade token. An intermediary
-that identifies the use of the capsule protocol MAY convert between DATAGRAM
+that identifies the use of the capsule protocol <span class="bcp14">MAY</span> convert between DATAGRAM
 capsules and QUIC DATAGRAM frames when forwarding. Definitions of new Capsule
-Types MAY specify optional custom intermediary processing.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.1-6">Endpoints which receive a Capsule with an unknown Capsule Type MUST silently
+Types <span class="bcp14">MAY</span> specify optional custom intermediary processing.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">Endpoints which receive a Capsule with an unknown Capsule Type <span class="bcp14">MUST</span> silently
 drop that Capsule.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
 <p id="section-4.1-7">By virtue of the definition of the data stream, the Capsule Protocol is not in
 use on responses unless the response includes a 2xx (Successful) status code.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
-<p id="section-4.1-8">The Capsule Protocol MUST NOT be used with messages that contain Content-Length,
+<p id="section-4.1-8">The Capsule Protocol <span class="bcp14">MUST NOT</span> be used with messages that contain Content-Length,
 Content-Type, or Transfer-Encoding header fields. Additionally, HTTP status
-codes 204 (No Content), 205 (Reset Content), and 206 (Partial Content) MUST NOT
+codes 204 (No Content), 205 (Reset Content), and 206 (Partial Content) <span class="bcp14">MUST NOT</span>
 be sent on responses that use the Capsule Protocol.<a href="#section-4.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1518,19 +1518,19 @@ be sent on responses that use the Capsule Protocol.<a href="#section-4.1-8" clas
         <h3 id="name-error-handling">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-error-handling" class="section-name selfRef">Error Handling</a>
         </h3>
-<p id="section-4.2-1">When an error occurs processing the capsule protocol, the receiver MUST treat
+<p id="section-4.2-1">When an error occurs processing the capsule protocol, the receiver <span class="bcp14">MUST</span> treat
 the message as malformed or incomplete, according to the underlying transport
 protocol.  For HTTP/3, the handling of malformed messages is described in
 <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-quic-http-34#section-4.1.3" class="relref">Section 4.1.3</a> of [<a href="#H3" class="xref">H3</a>]</span>.  For HTTP/2, the handling of malformed messages is
 described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-http2bis-07#section-8.1.1" class="relref">Section 8.1.1</a> of [<a href="#H2" class="xref">H2</a>]</span>.  For
 HTTP/1.1, the handling of incomplete messages is described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-messaging-19#section-8" class="relref">Section 8</a> of [<a href="#H1" class="xref">H1</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">Each capsule's payload MUST contain exactly the fields identified in its
+<p id="section-4.2-2">Each capsule's payload <span class="bcp14">MUST</span> contain exactly the fields identified in its
 description. A capsule payload that contains additional bytes after the
 identified fields or a capsule payload that terminates before the end of the
-identified fields MUST be treated as a malformed or incomplete message. In
-particular, redundant length encodings MUST be verified to be self-consistent.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+identified fields <span class="bcp14">MUST</span> be treated as a malformed or incomplete message. In
+particular, redundant length encodings <span class="bcp14">MUST</span> be verified to be self-consistent.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">When a stream carrying capsules terminates cleanly, if the last capsule on the
-stream was truncated, this MUST be treated as a malformed or incomplete message.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+stream was truncated, this <span class="bcp14">MUST</span> be treated as a malformed or incomplete message.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="hdr">
@@ -1538,9 +1538,9 @@ stream was truncated, this MUST be treated as a malformed or incomplete message.
         <h3 id="name-the-capsule-protocol-header">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-the-capsule-protocol-header" class="section-name selfRef">The Capsule-Protocol Header</a>
         </h3>
-<p id="section-4.3-1">Definitions of new HTTP Upgrade Tokens that use the Capsule Protocol MAY use the
+<p id="section-4.3-1">Definitions of new HTTP Upgrade Tokens that use the Capsule Protocol <span class="bcp14">MAY</span> use the
 Capsule-Protocol header field to simplify intermediary processing.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.3-2">"Capsule-Protocol" is an Item Structured Header (see <span><a href="https://rfc-editor.org/rfc/rfc8941#section-3.3" class="relref">Section 3.3</a> of [<a href="#STRUCTURED-FIELDS" class="xref">STRUCTURED-FIELDS</a>]</span>. Its value MUST be a Boolean. Its ABNF is:<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">"Capsule-Protocol" is an Item Structured Header (see <span><a href="https://rfc-editor.org/rfc/rfc8941#section-3.3" class="relref">Section 3.3</a> of [<a href="#STRUCTURED-FIELDS" class="xref">STRUCTURED-FIELDS</a>]</span>. Its value <span class="bcp14">MUST</span> be a Boolean. Its ABNF is:<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3-3">
 <pre>
 Capsule-Protocol = sf-boolean parameters
@@ -1549,14 +1549,14 @@ Capsule-Protocol = sf-boolean parameters
 <p id="section-4.3-4">Endpoints indicate that the Capsule Protocol is in use on the data stream by
 sending the Capsule-Protocol header field with a value of ?1. A Capsule-Protocol
 header field with a value of ?0 has the same semantics as when the header is not
-present. Intermediaries MAY use this header field to allow processing of HTTP
+present. Intermediaries <span class="bcp14">MAY</span> use this header field to allow processing of HTTP
 Datagrams for unknown HTTP Upgrade Tokens; note that this is only possible for
 HTTP Upgrade or Extended CONNECT.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.3-5">The Capsule-Protocol header field MUST NOT be sent multiple times on a message.
-The Capsule-Protocol header field MUST NOT be used on HTTP responses with a
+<p id="section-4.3-5">The Capsule-Protocol header field <span class="bcp14">MUST NOT</span> be sent multiple times on a message.
+The Capsule-Protocol header field <span class="bcp14">MUST NOT</span> be used on HTTP responses with a
 status code different from 2xx (Successful). This specification does not define
 any parameters for the Capsule-Protocol header field value, but future documents
-MAY define parameters. Receivers MUST ignore unknown parameters.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+<span class="bcp14">MAY</span> define parameters. Receivers <span class="bcp14">MUST</span> ignore unknown parameters.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="datagram-capsule">
@@ -1597,7 +1597,7 @@ datagrams sent in QUIC DATAGRAM frames. In particular, the restrictions on when
 it is allowed to send an HTTP Datagram and how to process them from <a href="#format" class="xref">Section 3</a>
 also apply to HTTP Datagrams sent and received using the DATAGRAM capsule.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
 <p id="section-4.4-5">An intermediary can reencode HTTP Datagrams as it forwards them. In other words,
-an intermediary MAY send a DATAGRAM capsule to forward an HTTP Datagram which
+an intermediary <span class="bcp14">MAY</span> send a DATAGRAM capsule to forward an HTTP Datagram which
 was received in a QUIC DATAGRAM frame, and vice versa.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
 <p id="section-4.4-6">Note that while DATAGRAM capsules that are sent on a stream are reliably
 delivered in order, intermediaries can reencode DATAGRAM capsules into QUIC
@@ -1605,10 +1605,10 @@ DATAGRAM frames when forwarding messages, which could result in loss or
 reordering.<a href="#section-4.4-6" class="pilcrow">¶</a></p>
 <p id="section-4.4-7">If an intermediary receives an HTTP Datagram in a QUIC DATAGRAM frame and is
 forwarding it on a connection that supports QUIC DATAGRAM frames, the
-intermediary SHOULD NOT convert that HTTP Datagram to a DATAGRAM capsule. If
+intermediary <span class="bcp14">SHOULD NOT</span> convert that HTTP Datagram to a DATAGRAM capsule. If
 the HTTP Datagram is too large to fit in a DATAGRAM frame (for example because
 the path MTU of that QUIC connection is too low or if the maximum UDP payload
-size advertised on that connection is too low), the intermediary SHOULD drop
+size advertised on that connection is too low), the intermediary <span class="bcp14">SHOULD</span> drop
 the HTTP Datagram instead of converting it to a DATAGRAM capsule. This
 preserves the end-to-end unreliability characteristic that methods such as
 Datagram Packetization Layer Path MTU Discovery (DPLPMTUD) depend on
@@ -1618,10 +1618,10 @@ loss; this can misrepresent the true path properties, defeating methods such as
 DPLPMTUD.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
 <p id="section-4.4-8">While DATAGRAM capsules can theoretically carry a payload of length
 2<sup>62</sup>-1, most applications will have their own limits on what datagran
-payload sizes are practical. Implementations SHOULD take those limits into
+payload sizes are practical. Implementations <span class="bcp14">SHOULD</span> take those limits into
 account when parsing DATAGRAM capsules: if an incoming DATAGRAM capsule has a
 length that is known to be so large as to not be usable, the implementation
-SHOULD discard the capsule without buffering its contents into memory.<a href="#section-4.4-8" class="pilcrow">¶</a></p>
+<span class="bcp14">SHOULD</span> discard the capsule without buffering its contents into memory.<a href="#section-4.4-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1634,7 +1634,7 @@ SHOULD discard the capsule without buffering its contents into memory.<a href="#
 <p id="section-5-1">Data streams (see <a href="#capsule-protocol" class="xref">Section 4.1</a>) can be prioritized using any means
 suited to stream or request prioritization. For example, see <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-priority-12#section-11" class="relref">Section 11</a> of [<a href="#PRIORITY" class="xref">PRIORITY</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">Prioritization of HTTP/3 datagrams is not defined in this document. Future
-extensions MAY define how to prioritize datagrams, and MAY define signaling to
+extensions <span class="bcp14">MAY</span> define how to prioritize datagrams, and <span class="bcp14">MAY</span> define signaling to
 allow endpoints to communicate their prioritization preferences.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1794,7 +1794,7 @@ Field Name" registry:<a href="#section-7.3-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-7.4-1">This document establishes a registry for HTTP capsule type codes. The "HTTP
 Capsule Types" registry governs a 62-bit space. Registrations in this registry
-MUST include the following fields:<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<span class="bcp14">MUST</span> include the following fields:<a href="#section-7.4-1" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-7.4-2">
           <dt id="section-7.4-2.1">Type:</dt>
           <dd style="margin-left: 1.5em" id="section-7.4-2.2">
@@ -1809,13 +1809,13 @@ integer.<a href="#section-7.4-2.4.1" class="pilcrow">¶</a></p>
           <dd class="break"></dd>
 <dt id="section-7.4-2.5">Reference:</dt>
           <dd style="margin-left: 1.5em" id="section-7.4-2.6">
-            <p id="section-7.4-2.6.1">An optional reference to a specification for the type. This field MAY be
+            <p id="section-7.4-2.6.1">An optional reference to a specification for the type. This field <span class="bcp14">MAY</span> be
 empty.<a href="#section-7.4-2.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
 <p id="section-7.4-3">Registrations follow the "First Come First Served" policy (see Section 4.4 of
-<span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations MUST NOT have the same Type.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
+<span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations <span class="bcp14">MUST NOT</span> have the same Type.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
 <p id="section-7.4-4">This registry initially contains the following entries:<a href="#section-7.4-4" class="pilcrow">¶</a></p>
 <span id="name-initial-capsule-types-regis"></span><div id="iana-types-table">
 <table class="center" id="table-1">
@@ -1842,7 +1842,7 @@ empty.<a href="#section-7.4-2.6.1" class="pilcrow">¶</a></p>
 <p id="section-7.4-6">Capsule types with a value of the form 41 * N + 23 for integer values of N are
 reserved to exercise the requirement that unknown capsule types be ignored.
 These capsules have no semantics and can carry arbitrary values. These values
-MUST NOT be assigned by IANA and MUST NOT appear in the listing of assigned
+<span class="bcp14">MUST NOT</span> be assigned by IANA and <span class="bcp14">MUST NOT</span> appear in the listing of assigned
 values.<a href="#section-7.4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
