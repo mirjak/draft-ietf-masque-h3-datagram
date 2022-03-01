@@ -76,7 +76,7 @@ Table of Contents
    4.  Capsules
      4.1.  Capsule Protocol
      4.2.  Error Handling
-     4.3.  The Capsule-Protocol Header
+     4.3.  The Capsule-Protocol Header Field
      4.4.  The DATAGRAM Capsule
    5.  Prioritization
    6.  Security Considerations
@@ -363,16 +363,13 @@ Table of Contents
    capsule on the stream was truncated, this MUST be treated as a
    malformed or incomplete message.
 
-4.3.  The Capsule-Protocol Header
+4.3.  The Capsule-Protocol Header Field
 
-   Definitions of new HTTP Upgrade Tokens that use the Capsule Protocol
-   MAY use the Capsule-Protocol header field to simplify intermediary
-   processing.
+   This document defines the "Capsule-Protocol" header field.  It is an
+   Item Structured Header [RFC8941]; its value MUST be a Boolean.  Its
+   ABNF is:
 
-   "Capsule-Protocol" is an Item Structured Header (see Section 3.3 of
-   [STRUCTURED-FIELDS].  Its value MUST be a Boolean.  Its ABNF is:
-
-   Capsule-Protocol = sf-boolean parameters
+   Capsule-Protocol = sf-item
 
    Endpoints indicate that the Capsule Protocol is in use on the data
    stream by sending the Capsule-Protocol header field with a value of
@@ -388,6 +385,10 @@ Table of Contents
    This specification does not define any parameters for the Capsule-
    Protocol header field value, but future documents MAY define
    parameters.  Receivers MUST ignore unknown parameters.
+
+   Definitions of new HTTP Upgrade Tokens that use the Capsule Protocol
+   MAY use the Capsule-Protocol header field to simplify intermediary
+   processing.
 
 4.4.  The DATAGRAM Capsule
 
@@ -612,8 +613,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [STRUCTURED-FIELDS]
-              Nottingham, M. and P-H. Kamp, "Structured Field Values for
+   [RFC8941]  Nottingham, M. and P-H. Kamp, "Structured Field Values for
               HTTP", RFC 8941, DOI 10.17487/RFC8941, February 2021,
               <https://www.rfc-editor.org/rfc/rfc8941>.
 
