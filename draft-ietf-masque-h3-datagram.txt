@@ -166,7 +166,7 @@ Table of Contents
       divisible by four).  The largest legal QUIC stream ID value is
       2^62-1, so the largest legal value of Quarter Stream ID is 2^60-1.
       Receipt of a frame that includes a larger value MUST be treated as
-      a connection error of type H3_DATAGRAM_ERROR.
+      an HTTP/3 connection error of type H3_DATAGRAM_ERROR.
 
    HTTP Datagram Payload:  The payload of the datagram, whose semantics
       are defined by individual applications.  Note that this field can
@@ -191,8 +191,8 @@ Table of Contents
 
    If an HTTP/3 datagram is received and its Quarter Stream ID maps to a
    stream that cannot be created due to client-initiated bidirectional
-   stream limits, it SHOULD be treated as a connection error of type
-   H3_ID_ERROR.  Generating an error is not mandatory in this case
+   stream limits, it SHOULD be treated as an HTTP/3 connection error of
+   type H3_ID_ERROR.  Generating an error is not mandatory in this case
    because HTTP/3 implementations might have practical barriers to
    determining the active stream concurrency limit that is applied by
    the QUIC layer.
@@ -204,9 +204,9 @@ Table of Contents
    GET or POST request streams.  If an endpoint receives an HTTP/3
    datagram associated with a method that has no known semantics for
    HTTP Datagrams, it MUST abort the corresponding stream with
-   H3_GENERAL_PROTOCOL_ERROR.  Future extensions MAY remove these
-   requirements if they define semantics for such HTTP Datagrams and
-   negotiate mutual support.
+   H3_DATAGRAM_ERROR.  Future extensions MAY remove these requirements
+   if they define semantics for such HTTP Datagrams and negotiate mutual
+   support.
 
 4.  Capsules
 
@@ -498,17 +498,22 @@ Table of Contents
 8.2.  HTTP/3 Error Code
 
    This document will request IANA to register the following entry in
-   the "HTTP/3 Error Code" registry:
+   the "HTTP/3 Error Codes" registry:
 
-      +===================+========+================+===============+
-      | Name              | Value  | Description    | Specification |
-      +===================+========+================+===============+
-      | H3_DATAGRAM_ERROR | 0x0111 | Datagram parse | This document |
-      +-------------------+--------+----------------+---------------+
-      |                   |        | error          |               |
-      +-------------------+--------+----------------+---------------+
+   Value:  0x4A1268 (note that this will switch to a lower value before
+      publication)
 
-                      Table 1: New HTTP/3 Error Codes
+   Name:  H3_DATAGRAM_ERROR
+
+   Description:  Datagram or capsule protocol parse error
+
+   Status:  provisional (permanent if this document is approved)
+
+   Specification:  This Document
+
+   Change Controller:  IETF
+
+   Contact:  HTTP_WG; HTTP working group; ietf-http-wg@w3.org
 
 8.3.  HTTP Header Field Name
 
@@ -551,7 +556,7 @@ Table of Contents
                 | DATAGRAM     | 0xff37a0 | This Document |
                 +--------------+----------+---------------+
 
-                  Table 2: Initial Capsule Types Registry
+                  Table 1: Initial Capsule Types Registry
                                   Entries
 
    Capsule types with a value of the form 41 * N + 23 for integer values

@@ -1316,8 +1316,8 @@ division by four stems from the fact that HTTP requests are sent on
 client-initiated bidirectional streams, and those have stream IDs that are
 divisible by four). The largest legal QUIC stream ID value is 2<sup>62</sup>-1,
 so the largest legal value of Quarter Stream ID is 2<sup>60</sup>-1. Receipt of
-a frame that includes a larger value MUST be treated as a connection error of
-type H3_DATAGRAM_ERROR.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+a frame that includes a larger value MUST be treated as an HTTP/3 connection
+error of type H3_DATAGRAM_ERROR.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="section-3-3.3">HTTP Datagram Payload:</dt>
@@ -1342,8 +1342,8 @@ silently or buffer it temporarily while awaiting the creation of the
 corresponding stream.<a href="#section-3-6" class="pilcrow">¶</a></p>
 <p id="section-3-7">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
 that cannot be created due to client-initiated bidirectional stream limits, it
-SHOULD be treated as a connection error of type H3_ID_ERROR. Generating an error
-is not mandatory in this case because HTTP/3 implementations might have
+SHOULD be treated as an HTTP/3 connection error of type H3_ID_ERROR. Generating
+an error is not mandatory in this case because HTTP/3 implementations might have
 practical barriers to determining the active stream concurrency limit that is
 applied by the QUIC layer.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <p id="section-3-8">HTTP/3 datagrams MUST only be sent with an association to a stream that supports
@@ -1352,8 +1352,8 @@ not define semantics for associated HTTP Datagrams; therefore, HTTP/3 datagrams
 cannot be sent associated with GET or POST request streams. If an endpoint
 receives an HTTP/3 datagram associated with a method that has no known semantics
 for HTTP Datagrams, it MUST abort the corresponding stream with
-H3_GENERAL_PROTOCOL_ERROR. Future extensions MAY remove these requirements if
-they define semantics for such HTTP Datagrams and negotiate mutual support.<a href="#section-3-8" class="pilcrow">¶</a></p>
+H3_DATAGRAM_ERROR. Future extensions MAY remove these requirements if they
+define semantics for such HTTP Datagrams and negotiate mutual support.<a href="#section-3-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="capsule">
@@ -1707,37 +1707,44 @@ JavaScript in web browsers).<a href="#section-7-2" class="pilcrow">¶</a></p>
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-http-3-error-code" class="section-name selfRef">HTTP/3 Error Code</a>
         </h3>
 <p id="section-8.2-1">This document will request IANA to register the following entry in the
-"HTTP/3 Error Code" registry:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
-<span id="name-new-http-3-error-codes"></span><div id="iana-error-table">
-<table class="center" id="table-1">
-          <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-new-http-3-error-codes" class="selfRef">New HTTP/3 Error Codes</a>
-          </caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">Name</th>
-              <th class="text-left" rowspan="1" colspan="1">Value</th>
-              <th class="text-left" rowspan="1" colspan="1">Description</th>
-              <th class="text-left" rowspan="1" colspan="1">Specification</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">H3_DATAGRAM_ERROR</td>
-              <td class="text-left" rowspan="1" colspan="1">0x0111</td>
-              <td class="text-left" rowspan="1" colspan="1">Datagram parse</td>
-              <td class="text-left" rowspan="1" colspan="1">This document</td>
-            </tr>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1">error</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-            </tr>
-          </tbody>
-        </table>
-</div>
+"HTTP/3 Error Codes" registry:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-8.2-2">
+          <dt id="section-8.2-2.1">Value:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.2">
+            <p id="section-8.2-2.2.1">0x4A1268 (note that this will switch to a lower value before publication)<a href="#section-8.2-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-8.2-2.3">Name:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.4">
+            <p id="section-8.2-2.4.1">H3_DATAGRAM_ERROR<a href="#section-8.2-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-8.2-2.5">Description:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.6">
+            <p id="section-8.2-2.6.1">Datagram or capsule protocol parse error<a href="#section-8.2-2.6.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-8.2-2.7">Status:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.8">
+            <p id="section-8.2-2.8.1">provisional (permanent if this document is approved)<a href="#section-8.2-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-8.2-2.9">Specification:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.10">
+            <p id="section-8.2-2.10.1">This Document<a href="#section-8.2-2.10.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-8.2-2.11">Change Controller:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.12">
+            <p id="section-8.2-2.12.1">IETF<a href="#section-8.2-2.12.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-8.2-2.13">Contact:</dt>
+          <dd style="margin-left: 1.5em" id="section-8.2-2.14">
+            <p id="section-8.2-2.14.1">HTTP_WG; HTTP working group; ietf-http-wg@w3.org<a href="#section-8.2-2.14.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
 </section>
 </div>
 <div id="iana-hdr">
@@ -1807,9 +1814,9 @@ empty.<a href="#section-8.4-2.6.1" class="pilcrow">¶</a></p>
 <span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations MUST NOT have the same Type.<a href="#section-8.4-3" class="pilcrow">¶</a></p>
 <p id="section-8.4-4">This registry initially contains the following entries:<a href="#section-8.4-4" class="pilcrow">¶</a></p>
 <span id="name-initial-capsule-types-regis"></span><div id="iana-types-table">
-<table class="center" id="table-2">
+<table class="center" id="table-1">
           <caption>
-<a href="#table-2" class="selfRef">Table 2</a>:
+<a href="#table-1" class="selfRef">Table 1</a>:
 <a href="#name-initial-capsule-types-regis" class="selfRef">Initial Capsule Types Registry Entries</a>
           </caption>
 <thead>
