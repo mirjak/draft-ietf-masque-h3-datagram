@@ -5,8 +5,8 @@
 MASQUE                                                       D. Schinazi
 Internet-Draft                                                Google LLC
 Intended status: Standards Track                               L. Pardue
-Expires: 2 September 2022                                     Cloudflare
-                                                            1 March 2022
+Expires: 5 September 2022                                     Cloudflare
+                                                            4 March 2022
 
 
                        Using Datagrams with HTTP
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 September 2022.
+   This Internet-Draft will expire on 5 September 2022.
 
 Copyright Notice
 
@@ -554,7 +554,7 @@ Table of Contents
                 +==============+==========+===============+
                 | Capsule Type | Value    | Specification |
                 +==============+==========+===============+
-                | DATAGRAM     | 0xff37a0 | This Document |
+                | DATAGRAM     | 0xff37a5 | This Document |
                 +--------------+----------+---------------+
 
                   Table 1: Initial Capsule Types Registry
