@@ -638,6 +638,8 @@ Table of Contents
 
 Appendix A.  Examples
 
+   [[RFC editor: please remove this appendix before publication.]]
+
 A.1.  CONNECT-UDP
 
    Client                                             Server
