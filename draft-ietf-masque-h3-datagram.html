@@ -1341,8 +1341,8 @@ reordering. Once the state is released, the endpoint <span class="bcp14">MUST</s
 received associated datagrams.<a href="#section-3-5" class="pilcrow">¶</a></p>
 <p id="section-3-6">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
 that has not yet been created, the receiver <span class="bcp14">SHALL</span> either drop that datagram
-silently or buffer it temporarily while awaiting the creation of the
-corresponding stream.<a href="#section-3-6" class="pilcrow">¶</a></p>
+silently or buffer it temporarily (on the order of a round trip) while awaiting
+the creation of the corresponding stream.<a href="#section-3-6" class="pilcrow">¶</a></p>
 <p id="section-3-7">If an HTTP/3 datagram is received and its Quarter Stream ID maps to a stream
 that cannot be created due to client-initiated bidirectional stream limits, it
 <span class="bcp14">SHOULD</span> be treated as an HTTP/3 connection error of type H3_ID_ERROR. Generating
