@@ -5,8 +5,8 @@
 MASQUE                                                       D. Schinazi
 Internet-Draft                                                Google LLC
 Intended status: Standards Track                               L. Pardue
-Expires: 5 September 2022                                     Cloudflare
-                                                            4 March 2022
+Expires: 22 September 2022                                    Cloudflare
+                                                           21 March 2022
 
 
                        Using Datagrams with HTTP
@@ -49,7 +49,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 September 2022.
+   This Internet-Draft will expire on 22 September 2022.
 
 Copyright Notice
 
@@ -88,9 +88,6 @@ Table of Contents
    8.  References
      8.1.  Normative References
      8.2.  Informative References
-   Appendix A.  Examples
-     A.1.  CONNECT-UDP
-     A.2.  WebTransport
    Acknowledgments
    Authors' Addresses
 
@@ -635,53 +632,6 @@ Table of Contents
               httpbis-priority-12, 17 January 2022,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
               priority-12>.
-
-Appendix A.  Examples
-
-   [[RFC editor: please remove this appendix before publication.]]
-
-A.1.  CONNECT-UDP
-
-   Client                                             Server
-
-   STREAM(44): HEADERS             -------->
-     :method = CONNECT
-     :protocol = connect-udp
-     :scheme = https
-     :path = /target.example.org/443/
-     :authority = proxy.example.org:443
-     capsule-protocol = ?1
-
-   DATAGRAM                        -------->
-     Quarter Stream ID = 11
-     Payload = Encapsulated UDP Payload
-
-              <--------  STREAM(44): HEADERS
-                           :status = 200
-                           capsule-protocol = ?1
-
-   /* Wait for target server to respond to UDP packet. */
-
-              <--------  DATAGRAM
-                           Quarter Stream ID = 11
-                           Payload = Encapsulated UDP Payload
-
-A.2.  WebTransport
-
-   Client                                             Server
-
-   STREAM(44): HEADERS            -------->
-     :method = CONNECT
-     :scheme = https
-     :protocol = webtransport
-     :path = /hello
-     :authority = webtransport.example.org:443
-     origin = https://www.example.org:443
-
-              <--------  STREAM(44): HEADERS
-                           :status = 200
-
-   /* Both endpoints can now send WebTransport datagrams. */
 
 Acknowledgments
 
