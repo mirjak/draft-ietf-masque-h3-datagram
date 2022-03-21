@@ -548,13 +548,12 @@ Table of Contents
 
    This registry initially contains the following entry:
 
-                +==============+==========+===============+
-                | Capsule Type | Value    | Specification |
-                +==============+==========+===============+
-                | DATAGRAM     | 0xff37a5 | This Document |
-                +--------------+----------+---------------+
+   Capsule Type:  DATAGRAM
 
-                  Table 1: Initial Capsule Types Registry
+   Value:  0xff37a5 (note that this will switch to a lower value before
+      publication)
+
+   Reference:  This document
 
    Capsule types with a value of the form 41 * N + 23 for integer values
    of N are reserved to exercise the requirement that unknown capsule

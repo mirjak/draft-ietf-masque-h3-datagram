@@ -1805,28 +1805,23 @@ empty.<a href="#section-7.4-2.6.1" class="pilcrow">¶</a></p>
 <p id="section-7.4-3">Registrations follow the "First Come First Served" policy (see Section 4.4 of
 <span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations <span class="bcp14">MUST NOT</span> have the same Type.<a href="#section-7.4-3" class="pilcrow">¶</a></p>
 <p id="section-7.4-4">This registry initially contains the following entry:<a href="#section-7.4-4" class="pilcrow">¶</a></p>
-<span id="name-initial-capsule-types-regis"></span><div id="iana-types-table">
-<table class="center" id="table-1">
-          <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-initial-capsule-types-regis" class="selfRef">Initial Capsule Types Registry</a>
-          </caption>
-<thead>
-            <tr>
-              <th class="text-left" rowspan="1" colspan="1">Capsule Type</th>
-              <th class="text-left" rowspan="1" colspan="1">Value</th>
-              <th class="text-left" rowspan="1" colspan="1">Specification</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-left" rowspan="1" colspan="1">DATAGRAM</td>
-              <td class="text-left" rowspan="1" colspan="1">0xff37a5</td>
-              <td class="text-left" rowspan="1" colspan="1">This Document</td>
-            </tr>
-          </tbody>
-        </table>
-</div>
+<span class="break"></span><dl class="dlParallel" id="section-7.4-5">
+          <dt id="section-7.4-5.1">Capsule Type:</dt>
+          <dd style="margin-left: 1.5em" id="section-7.4-5.2">
+            <p id="section-7.4-5.2.1">DATAGRAM<a href="#section-7.4-5.2.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-7.4-5.3">Value:</dt>
+          <dd style="margin-left: 1.5em" id="section-7.4-5.4">
+            <p id="section-7.4-5.4.1">0xff37a5 (note that this will switch to a lower value before publication)<a href="#section-7.4-5.4.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-7.4-5.5">Reference:</dt>
+          <dd style="margin-left: 1.5em" id="section-7.4-5.6">
+            <p id="section-7.4-5.6.1">This document<a href="#section-7.4-5.6.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+</dl>
 <p id="section-7.4-6">Capsule types with a value of the form 41 * N + 23 for integer values of N are
 reserved to exercise the requirement that unknown capsule types be ignored.
 These capsules have no semantics and can carry arbitrary values. These values
