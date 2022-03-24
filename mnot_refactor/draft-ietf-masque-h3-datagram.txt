@@ -130,10 +130,10 @@ Table of Contents
    multiplexing when possible.  All HTTP Datagrams are associated with
    an HTTP request.
 
-   When HTTP Datagrams are conveyed on a HTTP/3 connection, the QUIC
+   When HTTP Datagrams are conveyed on an HTTP/3 connection, the QUIC
    DATAGRAM frame can be used to achieve these goals, including
    unreliable delivery; see Section 2.1.  Negotiation is achieved using
-   a SETTING; see Section 2.1.1.
+   a setting; see Section 2.1.1.
 
    When running over HTTP/2, demultiplexing is provided by the HTTP/2
    framing layer, but unreliable delivery is unavailable.  HTTP
