@@ -418,10 +418,10 @@ Table of Contents
 3.5.  The DATAGRAM Capsule
 
    This document defines the DATAGRAM capsule type (see Section 5.4 for
-   the value of the capsule type).  This capsule allows HTTP Datagram to
-   be sent on a stream using the Capsule Protocol.  This is particularly
-   useful when HTTP is running over a transport that does not support
-   the QUIC DATAGRAM frame.
+   the value of the capsule type).  This capsule allows HTTP Datagrams
+   to be sent on a stream using the Capsule Protocol.  This is
+   particularly useful when HTTP is running over a transport that does
+   not support the QUIC DATAGRAM frame.
 
    Datagram Capsule {
      Type (i) = DATAGRAM,
