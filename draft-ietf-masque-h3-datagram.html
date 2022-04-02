@@ -17,7 +17,14 @@ in HTTP connections.
        Both are intended for use by HTTP extensions, not applications. 
     " name="description">
 <meta content="xml2rfc 3.12.3" name="generator">
-<meta content="Internet-Draft" name="keyword">
+<meta content="quic" name="keyword">
+<meta content="http" name="keyword">
+<meta content="datagram" name="keyword">
+<meta content="fast" name="keyword">
+<meta content="tunnels" name="keyword">
+<meta content="turtles all the way down" name="keyword">
+<meta content="masque" name="keyword">
+<meta content="http-ng" name="keyword">
 <meta content="draft-ietf-masque-h3-datagram-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.12.3
@@ -1020,11 +1027,11 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">HTTP Datagrams</td>
-<td class="right">March 2022</td>
+<td class="right">April 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Schinazi &amp; Pardue</td>
-<td class="center">Expires 29 September 2022</td>
+<td class="center">Expires 4 October 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1037,12 +1044,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dd class="internet-draft">draft-ietf-masque-h3-datagram-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-03-28" class="published">28 March 2022</time>
+<time datetime="2022-04-02" class="published">2 April 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-09-29">29 September 2022</time></dd>
+<dd class="expires"><time datetime="2022-10-04">4 October 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1068,14 +1075,19 @@ in HTTP connections.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">Both are intended for use by HTTP extensions, not applications.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
-      <h2 id="name-discussion-venues">
-<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
-<p id="section-note.1-2">Discussion of this document takes place on the MASQUE WG mailing list (masque@ietf.org),
-  which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/masque/">https://mailarchive.ietf.org/arch/browse/masque/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
-<p id="section-note.1-3">Source for this draft and an issue tracker can be found at
-  <span><a href="https://github.com/ietf-wg-masque/draft-ietf-masque-h3-datagram">https://github.com/ietf-wg-masque/draft-ietf-masque-h3-datagram</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://ietf-wg-masque.github.io/draft-ietf-masque-h3-datagram/draft-ietf-masque-h3-datagram.html">https://ietf-wg-masque.github.io/draft-ietf-masque-h3-datagram/draft-ietf-masque-h3-datagram.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-ietf-masque-h3-datagram/">https://datatracker.ietf.org/doc/draft-ietf-masque-h3-datagram/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        MASQUE Working Group mailing list (<span><a href="mailto:masque@ietf.org">mailto:masque@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/masque/">https://mailarchive.ietf.org/arch/browse/masque/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/ietf-wg-masque/draft-ietf-masque-h3-datagram">https://github.com/ietf-wg-masque/draft-ietf-masque-h3-datagram</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1096,7 +1108,7 @@ in HTTP connections.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 September 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 October 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1652,7 +1664,7 @@ JavaScript in web browsers).<a href="#section-4-2" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-5.1-1">This document will request IANA to register the following entry in the
 "HTTP/3 Settings" registry:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.1-2">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-5.1-2">
           <dt id="section-5.1-2.1">Value:</dt>
           <dd style="margin-left: 1.5em" id="section-5.1-2.2">
             <p id="section-5.1-2.2.1">0xffd277 (note that this will switch to a lower value before publication)<a href="#section-5.1-2.2.1" class="pilcrow">¶</a></p>
@@ -1698,7 +1710,7 @@ JavaScript in web browsers).<a href="#section-4-2" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-5.2-1">This document will request IANA to register the following entry in the
 "HTTP/3 Error Codes" registry:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.2-2">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-5.2-2">
           <dt id="section-5.2-2.1">Value:</dt>
           <dd style="margin-left: 1.5em" id="section-5.2-2.2">
             <p id="section-5.2-2.2.1">0x4A1268 (note that this will switch to a lower value before publication)<a href="#section-5.2-2.2.1" class="pilcrow">¶</a></p>
@@ -1744,7 +1756,7 @@ JavaScript in web browsers).<a href="#section-4-2" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-5.3-1">This document will request IANA to register the following entry in the "HTTP
 Field Name" registry:<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.3-2">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-5.3-2">
           <dt id="section-5.3-2.1">Field Name:</dt>
           <dd style="margin-left: 1.5em" id="section-5.3-2.2">
             <p id="section-5.3-2.2.1">Capsule-Protocol<a href="#section-5.3-2.2.1" class="pilcrow">¶</a></p>
@@ -1781,7 +1793,7 @@ Field Name" registry:<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.4-1">This document establishes a registry for HTTP capsule type codes. The "HTTP
 Capsule Types" registry governs a 62-bit space. Registrations in this registry
 <span class="bcp14">MUST</span> include the following fields:<a href="#section-5.4-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.4-2">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-5.4-2">
           <dt id="section-5.4-2.1">Type:</dt>
           <dd style="margin-left: 1.5em" id="section-5.4-2.2">
             <p id="section-5.4-2.2.1">A name or label for the capsule type.<a href="#section-5.4-2.2.1" class="pilcrow">¶</a></p>
@@ -1803,7 +1815,7 @@ empty.<a href="#section-5.4-2.6.1" class="pilcrow">¶</a></p>
 <p id="section-5.4-3">Registrations follow the "First Come First Served" policy (see Section 4.4 of
 <span>[<a href="#IANA-POLICY" class="xref">IANA-POLICY</a>]</span>) where two registrations <span class="bcp14">MUST NOT</span> have the same Type.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
 <p id="section-5.4-4">This registry initially contains the following entry:<a href="#section-5.4-4" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-5.4-5">
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-5.4-5">
           <dt id="section-5.4-5.1">Capsule Type:</dt>
           <dd style="margin-left: 1.5em" id="section-5.4-5.2">
             <p id="section-5.4-5.2.1">DATAGRAM<a href="#section-5.4-5.2.1" class="pilcrow">¶</a></p>
@@ -1936,7 +1948,8 @@ Nottingham and Philipp Tiesel for their helpful comments.<a href="#appendix-A-1"
 <div dir="auto" class="left"><span class="org">Google LLC</span></div>
 <div dir="auto" class="left"><span class="street-address">1600 Amphitheatre Parkway</span></div>
 <div dir="auto" class="left">
-<span class="locality">Mountain View, California 94043</span>,  </div>
+<span class="locality">Mountain View</span>, <span class="region">CA</span> <span class="postal-code">94043</span>
+</div>
 <div dir="auto" class="left"><span class="country-name">United States of America</span></div>
 <div class="email">
 <span>Email:</span>

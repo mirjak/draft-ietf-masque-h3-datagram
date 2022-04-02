@@ -5,8 +5,8 @@
 MASQUE                                                       D. Schinazi
 Internet-Draft                                                Google LLC
 Intended status: Standards Track                               L. Pardue
-Expires: 29 September 2022                                    Cloudflare
-                                                           28 March 2022
+Expires: 4 October 2022                                       Cloudflare
+                                                            2 April 2022
 
 
                 HTTP Datagrams and the Capsule Protocol
@@ -25,12 +25,17 @@ Abstract
 
    Both are intended for use by HTTP extensions, not applications.
 
-Discussion Venues
+About This Document
 
    This note is to be removed before publishing as an RFC.
 
-   Discussion of this document takes place on the MASQUE WG mailing list
-   (masque@ietf.org), which is archived at
+   The latest revision of this draft can be found at https://ietf-wg-
+   masque.github.io/draft-ietf-masque-h3-datagram/draft-ietf-masque-
+   h3-datagram.html.  Status information for this document may be found
+   at https://datatracker.ietf.org/doc/draft-ietf-masque-h3-datagram/.
+
+   Discussion of this document takes place on the MASQUE Working Group
+   mailing list (mailto:masque@ietf.org), which is archived at
    https://mailarchive.ietf.org/arch/browse/masque/.
 
    Source for this draft and an issue tracker can be found at
@@ -51,7 +56,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 September 2022.
+   This Internet-Draft will expire on 4 October 2022.
 
 Copyright Notice
 
@@ -507,17 +512,11 @@ Table of Contents
 
    Value:  0xffd277 (note that this will switch to a lower value before
       publication)
-
    Setting Name:  H3_DATAGRAM
-
    Default:  0
-
    Status:  provisional (permanent if this document is approved)
-
    Specification:  This Document
-
    Change Controller:  IETF
-
    Contact:  HTTP_WG; HTTP working group; ietf-http-wg@w3.org
 
 5.2.  HTTP/3 Error Code
@@ -527,17 +526,11 @@ Table of Contents
 
    Value:  0x4A1268 (note that this will switch to a lower value before
       publication)
-
    Name:  H3_DATAGRAM_ERROR
-
    Description:  Datagram or capsule protocol parse error
-
    Status:  provisional (permanent if this document is approved)
-
    Specification:  This Document
-
    Change Controller:  IETF
-
    Contact:  HTTP_WG; HTTP working group; ietf-http-wg@w3.org
 
 5.3.  HTTP Header Field Name
@@ -546,13 +539,9 @@ Table of Contents
    the "HTTP Field Name" registry:
 
    Field Name:  Capsule-Protocol
-
    Template:  None
-
    Status:  provisional (permanent if this document is approved)
-
    Reference:  This document
-
    Comments:  None
 
 5.4.  Capsule Types
@@ -562,10 +551,8 @@ Table of Contents
    Registrations in this registry MUST include the following fields:
 
    Type:  A name or label for the capsule type.
-
    Value:  The value of the Capsule Type field (see Section 3.2) is a
       62-bit integer.
-
    Reference:  An optional reference to a specification for the type.
       This field MAY be empty.
 
@@ -576,10 +563,8 @@ Table of Contents
    This registry initially contains the following entry:
 
    Capsule Type:  DATAGRAM
-
    Value:  0xff37a5 (note that this will switch to a lower value before
       publication)
-
    Reference:  This document
 
    Capsule types with a value of the form 41 * N + 23 for integer values
@@ -696,7 +681,7 @@ Authors' Addresses
    David Schinazi
    Google LLC
    1600 Amphitheatre Parkway
-   Mountain View, California 94043,
+   Mountain View, CA 94043
    United States of America
    Email: dschinazi.ietf@gmail.com
 
